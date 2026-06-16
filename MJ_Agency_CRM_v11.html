@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MJ Agency — CRM Acquisition v11</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+:root{
+  --gold:#EF9F27; --gold-d:#412402; --navy:#0f0f1a; --navy2:#1a1a3e;
+  --tp:#1a1a1a; --ts:#6b7280; --tt:#9ca3af;
+  --bg:#f9fafb; --bg2:#f3f4f6; --line:#e5e7eb; --line2:#d1d5db;
+}
+body{background:var(--bg2);padding:16px;color:var(--tp)}
+.shell{display:flex;border:0.5px solid var(--line);border-radius:12px;overflow:hidden;min-height:980px;background:var(--bg);max-width:1440px;margin:0 auto}
+
+/* ===== Sidebar ===== */
+.sidebar{width:200px;flex-shrink:0;background:var(--navy);display:flex;flex-direction:column}
+.sbl{padding:14px 13px;border-bottom:0.5px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:8px}
+.lt{font-size:13px;font-weight:500;color:#fff}.ls{font-size:10px;color:rgba(255,255,255,.35);margin-top:1px}
+.ss{padding:14px 13px 4px;font-size:10px;color:rgba(255,255,255,.28);letter-spacing:.8px;text-transform:uppercase}
+.ni{display:flex;align-items:center;gap:9px;padding:7px 13px;font-size:12px;color:rgba(255,255,255,.5);border-left:2px solid transparent;cursor:pointer;position:relative}
+.ni:hover{background:rgba(255,255,255,.03);color:rgba(255,255,255,.8)}
+.ni.on{color:#fff;background:rgba(255,255,255,.06);border-left-color:var(--gold)}
+.ni .cnt{margin-left:auto;font-size:9px;color:rgba(255,255,255,.4)}
+.pico{width:18px;height:18px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.ni .soon{margin-left:auto;font-size:8px;color:var(--gold);background:rgba(239,159,39,.12);padding:1px 5px;border-radius:8px}
+
+/* ===== Main ===== */
+.main{flex:1;background:var(--bg);display:flex;flex-direction:column;min-width:0}
+.topbar{background:#fff;border-bottom:0.5px solid var(--line);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ptitle{font-size:15px;font-weight:500;color:var(--tp);display:flex;align-items:center;gap:8px}
+.psub{font-size:11px;color:var(--ts);margin-top:2px}
+.btn{padding:6px 12px;border-radius:7px;font-size:11px;border:0.5px solid var(--line2);background:#fff;color:var(--tp);cursor:pointer;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.btn:hover{background:var(--bg)}
+.btn-accent{background:var(--gold);border-color:var(--gold);color:var(--gold-d);font-weight:500}
+.btn-accent:hover{background:#e0921c}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap}
+
+/* model selector */
+.ms-wrap{position:relative}
+.ms-btn{display:flex;align-items:center;gap:7px;padding:5px 10px;border:0.5px solid var(--line2);border-radius:8px;background:#fff;cursor:pointer;font-size:12px;color:var(--tp);min-width:150px}
+.ms-btn:hover{background:var(--bg)}
+.mav{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#fff;flex-shrink:0}
+.ms-pop{display:none;position:absolute;top:calc(100% + 5px);right:0;background:#fff;border:0.5px solid var(--line2);border-radius:10px;width:300px;z-index:60;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.16)}
+.ms-pop.open{display:block}
+.ms-search{padding:9px 10px;border-bottom:0.5px solid var(--line)}
+.ms-search input{width:100%;padding:7px 10px;border:0.5px solid var(--line2);border-radius:7px;font-size:12px;color:var(--tp)}
+.ms-list{max-height:320px;overflow-y:auto;padding:5px}
+.ms-row{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:7px;cursor:pointer}
+.ms-row:hover{background:var(--bg)}
+.ms-row.on{background:#FFF6E6}
+.ms-row .nm{font-size:12px;font-weight:500;color:var(--tp)}
+.ms-row .meta{font-size:10px;color:var(--ts);margin-top:1px}
+.ms-empty{padding:18px;text-align:center;font-size:11px;color:var(--ts)}
+.lang-wrap{position:relative}
+.lang-btn{display:flex;align-items:center;gap:5px;padding:5px 9px;border:0.5px solid var(--line2);border-radius:8px;background:#fff;cursor:pointer;font-size:12px;color:var(--tp)}
+.lang-btn:hover{background:var(--bg)}
+.lang-pop{display:none;position:absolute;top:calc(100% + 5px);right:0;background:#fff;border:0.5px solid var(--line2);border-radius:9px;width:160px;z-index:60;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.14);padding:4px}
+.lang-pop.open{display:block}
+.lang-row{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:7px;cursor:pointer;font-size:12px;color:var(--tp)}
+.lang-row:hover{background:var(--bg)}
+.lang-row.on{background:#FFF6E6;font-weight:500}
+
+.content{padding:14px 16px;flex:1;overflow-y:auto}
+.page-tabs{display:flex;gap:0;border-bottom:0.5px solid var(--line);margin-bottom:14px}
+.ptab{padding:8px 15px;font-size:12px;color:var(--ts);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.ptab.on{color:var(--tp);border-bottom-color:var(--gold);font-weight:500}
+.ptab i{font-size:14px}
+
+.acct-tabs{display:flex;gap:5px;margin-bottom:12px;flex-wrap:wrap}
+.atab{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;font-size:11px;border:0.5px solid var(--line2);background:transparent;color:var(--ts);cursor:pointer}
+.atab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.atab-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+.period-nav{display:flex;align-items:center;gap:8px;margin-bottom:13px;flex-wrap:wrap}
+.ybtn{width:25px;height:25px;border-radius:7px;border:0.5px solid var(--line2);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ts)}
+.ybtn:hover{background:var(--bg)}
+.year-label{font-size:14px;font-weight:500;color:var(--tp);min-width:38px;text-align:center}
+.month-tabs{display:flex;gap:3px;flex-wrap:wrap}
+.mtab{padding:4px 9px;border-radius:20px;font-size:11px;border:0.5px solid var(--line2);background:transparent;color:var(--ts);cursor:pointer}
+.mtab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;margin-bottom:12px}
+.kpi{background:#fff;border:0.5px solid var(--line);border-radius:9px;padding:10px 11px}
+.kpi-ico{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;font-size:13px}
+.kpi-v{font-size:16px;font-weight:500;color:var(--tp)}
+.kpi-l{font-size:10px;color:var(--ts);margin-top:1px}
+.kpi-d{font-size:9px;margin-top:3px;display:flex;align-items:center;gap:2px}
+.up{color:#27500A}.down{color:#A32D2D}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.mid-grid{display:grid;grid-template-columns:232px 1fr;gap:12px;margin-bottom:12px}
+.card{background:#fff;border:0.5px solid var(--line);border-radius:11px}
+.card-pad{padding:13px 15px}
+.card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+.card-title{font-size:12px;font-weight:500;color:var(--tp);display:flex;align-items:center;gap:6px}
+.card-title i{font-size:14px;color:var(--ts)}
+
+/* Calendar */
+.cal-card{background:#fff;border:0.5px solid var(--line);border-radius:11px;overflow:hidden}
+.cal-hd{padding:10px 12px;border-bottom:0.5px solid var(--line);font-size:11px;font-weight:500;color:var(--tp);display:flex;align-items:center;justify-content:space-between}
+.cal-sel{font-size:9px;color:var(--ts)}
+.cal-dow-grid{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:0.5px solid var(--line)}
+.cal-dow{text-align:center;font-size:9px;font-weight:500;color:var(--ts);padding:5px 2px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr)}
+.cal-day{padding:3px;min-height:30px;border-right:0.5px solid var(--line);border-bottom:0.5px solid var(--line);cursor:pointer}
+.cal-day:nth-child(7n){border-right:none}
+.cal-day.empty{background:var(--bg);cursor:default}
+.cal-day.we{background:#fffdf8}
+.cal-day.selected{background:#EF9F2722;outline:1.5px solid var(--gold);outline-offset:-1px}
+.cal-dn{font-size:9px;font-weight:500;color:var(--tp)}
+.cal-dots{display:flex;gap:1px;flex-wrap:wrap;margin-top:1px}
+.cal-dot{width:4px;height:4px;border-radius:50%}
+.dp-card{background:#fff;border:0.5px solid var(--line);border-radius:11px;padding:11px 12px;margin-top:9px}
+.dp-label{font-size:11px;font-weight:500;color:var(--tp);margin-bottom:8px}
+.dp-row{display:flex;gap:5px;align-items:center;margin-bottom:7px}
+.dp-input{flex:1;padding:5px 7px;border:0.5px solid var(--line2);border-radius:7px;background:#fff;color:var(--tp);font-size:11px;min-width:0}
+.dp-sep{font-size:11px;color:var(--ts);flex-shrink:0}
+
+.view-btns{display:flex;gap:3px}
+.vb{padding:3px 9px;border-radius:7px;font-size:11px;border:0.5px solid var(--line2);background:transparent;color:var(--ts);cursor:pointer}
+.vb.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.pills{display:flex;gap:4px;flex-wrap:wrap}
+.pill{padding:3px 9px;border-radius:20px;font-size:11px;cursor:pointer;border:0.5px solid var(--line2);color:var(--ts)}
+
+/* table */
+.post-card{background:#fff;border:0.5px solid var(--line);border-radius:11px;overflow:hidden}
+.post-hd{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;border-bottom:0.5px solid var(--line);flex-wrap:wrap;gap:7px}
+.post-lbl{font-size:12px;font-weight:500;color:var(--tp)}
+.leg{display:flex;gap:8px;align-items:center}
+.ld{width:8px;height:8px;border-radius:3px}
+.ll{font-size:10px;color:var(--ts)}
+.filters{display:flex;gap:4px;flex-wrap:wrap}
+.fc{padding:3px 9px;border-radius:20px;font-size:10px;border:0.5px solid var(--line2);background:transparent;color:var(--ts);cursor:pointer}
+.fc.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{padding:6px 8px;text-align:left;font-size:10px;font-weight:500;color:var(--ts);background:var(--bg);border-bottom:0.5px solid var(--line);white-space:nowrap;position:sticky;top:0;z-index:1}
+td{border-bottom:0.5px solid var(--line);color:var(--tp);vertical-align:middle}
+td.p{padding:6px 8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+tr:hover td{background:#fcfcfd}
+.sep-row td{background:var(--bg);padding:6px 9px;font-size:11px;font-weight:500;border-top:0.5px solid var(--line2)}
+.sep-row tr:hover td{background:var(--bg)}
+.tag{display:inline-block;padding:1px 5px;border-radius:5px;font-size:9px;font-weight:500}
+.sp2{display:inline-flex;align-items:center;gap:2px;padding:2px 6px;border-radius:20px;font-size:9px;font-weight:500}
+.score-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 6px;border-radius:20px;font-size:9px;font-weight:600}
+.score-badge .dot{width:6px;height:6px;border-radius:50%}
+.src{display:inline-flex;align-items:center;gap:3px;font-size:8px;font-weight:500;padding:1px 5px;border-radius:5px}
+.src-manuel{background:#EEF1F4;color:#5b6470}
+.src-metricool{background:#E8EEFC;color:#2747A8}
+.src-csv{background:#EAF3DE;color:#27500A}
+.eb{width:23px;height:23px;border-radius:6px;border:0.5px solid var(--line2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ts)}
+.eb:hover{background:var(--bg);color:var(--tp)}
+.lnk{font-size:9px;color:#2747A8;text-decoration:none}
+
+/* Funnel / ROI */
+.funnel{display:flex;flex-direction:column;gap:7px}
+.fn-step{display:flex;align-items:center;gap:11px}
+.fn-meta{width:130px;flex-shrink:0}
+.fn-name{font-size:11px;font-weight:500;color:var(--tp)}
+.fn-sub{font-size:9px;color:var(--ts);margin-top:1px}
+.fn-track{flex:1;height:30px;background:var(--bg);border-radius:7px;overflow:hidden;position:relative}
+.fn-fill{height:100%;border-radius:7px;display:flex;align-items:center;padding-left:11px;font-size:11px;font-weight:600;color:#fff;min-width:fit-content;white-space:nowrap;transition:width .5s}
+.fn-rate{width:64px;flex-shrink:0;text-align:right;font-size:10px;color:var(--ts)}
+.fn-rate b{display:block;font-size:11px;color:var(--tp);font-weight:600}
+
+.formula{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);border-radius:11px;padding:15px 17px}
+.formula-hd{display:flex;align-items:center;gap:8px;margin-bottom:13px}
+.formula-badge{background:var(--gold);color:var(--gold-d);font-size:10px;font-weight:600;padding:2px 9px;border-radius:20px}
+.formula-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:13px}
+.formula-item{background:rgba(255,255,255,.05);border:0.5px solid rgba(255,255,255,.09);border-radius:9px;padding:9px 10px}
+.formula-k{font-size:9px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.5px}
+.formula-v{font-size:13px;font-weight:500;color:#fff;margin-top:3px}
+.formula-x{color:var(--gold);font-size:14px;font-weight:600}
+
+.roi-row{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.roi-name{font-size:11px;color:var(--tp);width:100px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.roi-bar-wrap{flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden}
+.roi-bar{height:100%;border-radius:4px}
+.roi-val{font-size:10px;color:var(--ts);width:54px;text-align:right;flex-shrink:0}
+
+/* Intelligence */
+.intel-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.hook-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.hook-name{font-size:11px;color:var(--tp);width:108px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hook-bar-wrap{flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden}
+.hook-bar{height:100%;border-radius:4px}
+.hook-val{font-size:10px;color:var(--ts);width:42px;text-align:right;flex-shrink:0}
+.heatmap{display:grid;grid-template-columns:30px repeat(7,1fr);gap:2px}
+.hm-head{font-size:9px;color:var(--ts);text-align:center;padding-bottom:3px}
+.hm-label{font-size:9px;color:var(--ts);display:flex;align-items:center;justify-content:flex-end;padding-right:3px}
+.hm-cell{height:18px;border-radius:4px}
+.dur-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.dur-label{font-size:11px;color:var(--tp);width:78px;flex-shrink:0}
+.dur-bar-wrap{flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden}
+.dur-bar{height:100%;border-radius:4px}
+.dur-val{font-size:10px;color:var(--ts);width:44px;text-align:right;flex-shrink:0}
+.trend-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.trend-month{font-size:11px;color:var(--tp);width:30px;flex-shrink:0}
+.trend-bar-wrap{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.trend-bar{height:100%;border-radius:4px}
+.trend-val{font-size:10px;color:var(--ts);width:48px;text-align:right;flex-shrink:0}
+.reco-card{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);border-radius:11px;padding:15px 17px;margin-bottom:12px}
+.reco-header{display:flex;align-items:center;gap:8px;margin-bottom:11px}
+.reco-badge{background:var(--gold);color:var(--gold-d);font-size:10px;font-weight:600;padding:2px 9px;border-radius:20px}
+.reco-item{display:flex;align-items:flex-start;gap:9px;margin-bottom:9px}
+.reco-icon{font-size:14px;flex-shrink:0;margin-top:1px;color:var(--gold)}
+.reco-text{font-size:12px;color:rgba(255,255,255,.82);line-height:1.55}
+.reco-text b{color:var(--gold);font-weight:500}
+
+/* Dashboard agence */
+.lead-name{display:flex;align-items:center;gap:8px}
+.spark{display:flex;align-items:flex-end;gap:1.5px;height:22px}
+.spark span{width:4px;border-radius:1px;background:var(--gold);opacity:.85}
+.alert{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border-radius:9px;border:0.5px solid var(--line)}
+.alert i{font-size:16px;flex-shrink:0;margin-top:1px}
+.alert .at{font-size:11px;font-weight:500;color:var(--tp)}
+.alert .ad{font-size:10px;color:var(--ts);margin-top:2px;line-height:1.45}
+
+/* Modal */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:80;align-items:flex-start;justify-content:center;padding-top:36px;overflow-y:auto}
+.overlay.open{display:flex}
+.modal{background:#fff;border-radius:12px;border:0.5px solid var(--line);width:420px;max-width:95vw;overflow:hidden;margin-bottom:36px}
+.mhd2{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:0.5px solid var(--line)}
+.mtit{font-size:13px;font-weight:500;color:var(--tp)}
+.mbody{padding:13px 14px}
+.flabel{font-size:11px;color:var(--ts);margin-bottom:3px;display:block}
+.finput{width:100%;padding:6px 8px;border:0.5px solid var(--line2);border-radius:7px;background:#fff;color:var(--tp);font-size:12px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:9px}
+.mft{display:flex;justify-content:flex-end;gap:7px;padding:11px 14px;border-top:0.5px solid var(--line)}
+.dvd{font-size:10px;color:var(--tt);text-transform:uppercase;letter-spacing:.7px;margin:11px 0 7px;padding-bottom:4px;border-bottom:0.5px solid var(--line)}
+.sg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.sf{background:var(--bg);border-radius:7px;padding:6px 8px}
+.dz{border:1.5px dashed var(--line2);border-radius:9px;padding:22px;text-align:center;color:var(--ts);font-size:11px;cursor:pointer}
+.dz:hover{border-color:var(--gold);background:#FFFBF2}
+.dz i{font-size:26px;color:var(--gold);display:block;margin-bottom:6px}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:#fff;padding:11px 18px;border-radius:10px;font-size:12px;z-index:99;display:flex;align-items:center;gap:8px;box-shadow:0 8px 28px rgba(0,0,0,.25);opacity:0;transition:all .3s}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast i{color:var(--gold);font-size:15px}
+.empty-state{text-align:center;padding:40px 20px;color:var(--ts);font-size:12px}
+.empty-state i{font-size:34px;color:var(--line2);display:block;margin-bottom:10px}
+.muted{color:var(--ts)}
+@media(max-width:1040px){
+  .mid-grid{grid-template-columns:1fr}
+  .grid2{grid-template-columns:1fr}
+  .intel-grid{grid-template-columns:1fr}
+  .kpi-row{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .formula-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .kpi-row{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <div class="sidebar">
+    <div class="sbl">
+      <svg width="26" height="26" viewBox="0 0 28 28"><rect width="28" height="28" rx="7" fill="#EF9F27"/><text x="14" y="19" text-anchor="middle" font-size="12" font-weight="700" fill="#0f0f1a" font-family="sans-serif">MJ</text></svg>
+      <div><div class="lt">MJ Agency</div><div class="ls" data-i18n="brand_sub">Acquisition CRM</div></div>
+    </div>
+    <div class="ss" data-i18n="nav_global">Vue globale</div>
+    <div class="ni" id="nav-dashboard" onclick="goDashboard()"><i class="ti ti-layout-dashboard" style="font-size:14px"></i> <span data-i18n="nav_dashboard">Dashboard agence</span></div>
+    <div class="ss" data-i18n="nav_channels">Canaux</div>
+    <div id="chanRail"></div>
+    <div style="margin-top:auto">
+      <div class="ss" data-i18n="nav_agency">Agence</div>
+      <div class="ni" onclick="goPage('intel')"><i class="ti ti-brain" style="font-size:14px"></i> <span data-i18n="nav_intel">Intelligence</span></div>
+      <div class="ni" onclick="toast(t('toast_planning'))"><i class="ti ti-calendar-event" style="font-size:14px"></i> <span data-i18n="nav_planning">Planning</span> <span class="soon" data-i18n="soon">bientôt</span></div>
+      <div class="ni" onclick="toast(t('toast_team'))"><i class="ti ti-users" style="font-size:14px"></i> <span data-i18n="nav_team">Équipe</span> <span class="soon" data-i18n="soon">bientôt</span></div>
+      <div class="ni" onclick="toast(t('toast_settings'))"><i class="ti ti-settings" style="font-size:14px"></i> <span data-i18n="nav_settings">Réglages</span> <span class="soon" data-i18n="soon">bientôt</span></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="ptitle" id="ptitle"><i class="ti ti-brand-instagram" style="color:#E1306C"></i> <span id="titleTxt">Instagram — Luna</span></div>
+        <div class="psub" id="topSub">Juin 2026</div>
+      </div>
+      <div class="topbar-right">
+        <div class="lang-wrap" id="langWrap">
+          <div class="lang-btn" onclick="toggleLang()"><i class="ti ti-language" style="font-size:14px;color:#6b7280"></i> <span id="langCur">FR</span> <i class="ti ti-chevron-down" style="font-size:11px;color:#9ca3af"></i></div>
+          <div class="lang-pop" id="langPop"></div>
+        </div>
+        <button class="btn" onclick="openImport()"><i class="ti ti-file-upload"></i> <span data-i18n="import_csv">Importer CSV</span></button>
+        <div class="ms-wrap" id="msWrap">
+          <div class="ms-btn" onclick="toggleMS()">
+            <div class="mav" id="msAv" style="background:#E1306C">L</div>
+            <span id="msName" style="flex:1">Luna</span>
+            <i class="ti ti-selector" style="font-size:13px;color:#9ca3af"></i>
+          </div>
+          <div class="ms-pop" id="msPop">
+            <div class="ms-search"><input type="text" id="msSearch" data-i18n-ph="search_model" placeholder="Rechercher un modèle…" oninput="renderMSList()" onclick="event.stopPropagation()"></div>
+            <div class="ms-list" id="msList"></div>
+          </div>
+        </div>
+        <button class="btn btn-accent" onclick="openNew()"><i class="ti ti-plus"></i> <span data-i18n="new_post">Nouveau post</span></button>
+      </div>
+    </div>
+
+    <div class="content" id="content"></div>
+  </div>
+</div>
+
+<!-- Modal new / edit -->
+<div class="overlay" id="mo" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="mhd2"><div class="mtit" id="mTitle">Nouveau post</div>
+      <button style="background:none;border:none;cursor:pointer;color:#6b7280;font-size:16px" onclick="closeModal()">✕</button></div>
+    <div class="mbody">
+      <div style="font-size:11px;color:#6b7280;margin-bottom:9px" id="mSub"></div>
+      <div class="frow">
+        <div><span class="flabel" data-i18n="lbl_postname">Nom du post</span><input class="finput" id="f-nom" data-i18n-ph="ph_postname" placeholder="ex: Teaser robe rouge"></div>
+        <div><span class="flabel" data-i18n="lbl_hook">Hook / accroche</span><input class="finput" id="f-hook" data-i18n-ph="ph_hook" placeholder="ex: robe rouge, golden hour"></div>
+      </div>
+      <div class="frow">
+        <div><span class="flabel" data-i18n="lbl_account">Compte</span><select class="finput" id="f-acct"></select></div>
+        <div><span class="flabel" data-i18n="lbl_type">Type</span><select class="finput" id="f-type"><option>Reel</option><option>Story</option><option>Photo</option><option>Carrousel</option><option>Tweet</option><option>Post</option></select></div>
+      </div>
+      <div class="frow">
+        <div><span class="flabel" data-i18n="lbl_date">Date</span><input class="finput" id="f-date" type="date"></div>
+        <div><span class="flabel" data-i18n="lbl_time">Heure</span><input class="finput" id="f-heure" type="time" value="18:30"></div>
+      </div>
+      <div><span class="flabel" data-i18n="lbl_link">Lien tracké (bio)</span><input class="finput" id="f-link" placeholder="mjagency.link/luna-robe-rouge"></div>
+      <div class="dvd" data-i18n="stats_div">Stats (J+1 = initiales · à finaliser plus tard)</div>
+      <div class="sg">
+        <div class="sf"><span class="flabel" data-i18n="lbl_v">Vues</span><input class="finput" id="f-v" type="number" placeholder="0" style="padding:4px 7px"></div>
+        <div class="sf"><span class="flabel" data-i18n="lbl_l">Likes</span><input class="finput" id="f-l" type="number" placeholder="0" style="padding:4px 7px"></div>
+        <div class="sf"><span class="flabel" data-i18n="lbl_c">Comm.</span><input class="finput" id="f-c" type="number" placeholder="0" style="padding:4px 7px"></div>
+        <div class="sf"><span class="flabel" data-i18n="lbl_e">Enreg.</span><input class="finput" id="f-e" type="number" placeholder="0" style="padding:4px 7px"></div>
+        <div class="sf"><span class="flabel" data-i18n="lbl_s">Partages</span><input class="finput" id="f-s" type="number" placeholder="0" style="padding:4px 7px"></div>
+        <div class="sf"><span class="flabel" data-i18n="lbl_d">Durée (j.)</span><input class="finput" id="f-d" type="number" placeholder="7" style="padding:4px 7px"></div>
+      </div>
+      <div class="dvd" data-i18n="acq_div">Acquisition (via lien tracké / import CSV)</div>
+      <div class="sg">
+        <div class="sf"><span class="flabel" data-i18n="lbl_clicks">Clics</span><input class="finput" id="f-clk" type="number" placeholder="0" style="padding:4px 7px"></div>
+        <div class="sf"><span class="flabel" data-i18n="lbl_subs">Abonnés OF</span><input class="finput" id="f-sub" type="number" placeholder="0" style="padding:4px 7px"></div>
+        <div class="sf"><span class="flabel" data-i18n="lbl_rev">Revenu €</span><input class="finput" id="f-rev" type="number" placeholder="0" style="padding:4px 7px"></div>
+      </div>
+    </div>
+    <div class="mft"><button class="btn" onclick="closeModal()" data-i18n="cancel">Annuler</button>
+      <button class="btn btn-accent" onclick="saveModal()" data-i18n="save">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Modal import CSV -->
+<div class="overlay" id="moImp" onclick="if(event.target===this)closeImport()">
+  <div class="modal" style="width:440px">
+    <div class="mhd2"><div class="mtit" data-i18n="import_title">Importer un CSV</div>
+      <button style="background:none;border:none;cursor:pointer;color:#6b7280;font-size:16px" onclick="closeImport()">✕</button></div>
+    <div class="mbody">
+      <div style="font-size:11px;color:#6b7280;margin-bottom:11px;line-height:1.5" data-i18n-html="import_desc">Importe l'export de ton outil de liens / CRM.</div>
+      <div class="dz" onclick="simImport()">
+        <i class="ti ti-cloud-upload"></i>
+        <span data-i18n="import_drop1">Glisse ton fichier .csv ici</span><br><span style="font-size:10px" data-i18n="import_drop2">ou clique pour simuler un import</span>
+      </div>
+      <div style="display:flex;gap:7px;margin-top:11px">
+        <div class="src src-metricool" style="font-size:9px;padding:3px 7px"><i class="ti ti-plug"></i> Metricool API</div>
+        <div class="src src-csv" style="font-size:9px;padding:3px 7px"><i class="ti ti-file-spreadsheet"></i> CSV</div>
+        <div class="src src-manuel" style="font-size:9px;padding:3px 7px"><i class="ti ti-keyboard"></i> <span data-i18n="src_manual">Saisie manuelle</span></div>
+      </div>
+    </div>
+    <div class="mft"><button class="btn" onclick="closeImport()" data-i18n="close">Fermer</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i class="ti ti-check"></i> <span id="toastTxt"></span></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+/* ============ seeded PRNG (stable data) ============ */
+function hashStr(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function mkRng(seed){const r=mulberry32(hashStr(seed));return{f:r,i:(a,b)=>Math.floor(r()*(b-a+1))+a,pick:arr=>arr[Math.floor(r()*arr.length)]}}
+
+/* ============ constants ============ */
+const LOCALES={
+  fr:{JFR:['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],JLONG:['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],MFR:['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],MFRC:['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'],niches:['Lifestyle / glam','Fitness','Cosplay','Gaming','Glamour','ASMR','Mode','Voyage','Beauté','Danse','Alt / tattoo','Girl next door']},
+  en:{JFR:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],JLONG:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],MFR:['January','February','March','April','May','June','July','August','September','October','November','December'],MFRC:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],niches:['Lifestyle / glam','Fitness','Cosplay','Gaming','Glamour','ASMR','Fashion','Travel','Beauty','Dance','Alt / tattoo','Girl next door']},
+  es:{JFR:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],JLONG:['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],MFR:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],MFRC:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],niches:['Lifestyle / glam','Fitness','Cosplay','Gaming','Glamour','ASMR','Moda','Viajes','Belleza','Baile','Alt / tattoo','Girl next door']},
+  it:{JFR:['Dom','Lun','Mar','Mer','Gio','Ven','Sab'],JLONG:['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'],MFR:['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'],MFRC:['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'],niches:['Lifestyle / glam','Fitness','Cosplay','Gaming','Glamour','ASMR','Moda','Viaggi','Bellezza','Danza','Alt / tattoo','Girl next door']},
+};
+let curLang='fr';
+let JFR=LOCALES.fr.JFR,JLONG=LOCALES.fr.JLONG,MFR=LOCALES.fr.MFR,MFRC=LOCALES.fr.MFRC;
+function nicheLabel(i){return (LOCALES[curLang]||LOCALES.fr).niches[i]}
+function t(k,p){let s=(I18N[curLang]&&I18N[curLang][k]!=null)?I18N[curLang][k]:(I18N.fr[k]!=null?I18N.fr[k]:k);if(p)for(const key in p)s=s.split('{'+key+'}').join(p[key]);return s}
+function applyStaticI18n(){document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.getAttribute('data-i18n'))});document.querySelectorAll('[data-i18n-html]').forEach(el=>{el.innerHTML=t(el.getAttribute('data-i18n-html'))});document.querySelectorAll('[data-i18n-ph]').forEach(el=>{el.setAttribute('placeholder',t(el.getAttribute('data-i18n-ph')))})}
+const LANGS=[['fr','Français'],['en','English'],['es','Español'],['it','Italiano']];
+function renderLangList(){document.getElementById('langPop').innerHTML=LANGS.map(l=>`<div class="lang-row${curLang===l[0]?' on':''}" onclick="setLang('${l[0]}')"><span style="font-weight:600;width:22px;display:inline-block">${l[0].toUpperCase()}</span> ${l[1]}</div>`).join('')}
+function toggleLang(){renderLangList();document.getElementById('langPop').classList.toggle('open')}
+function setLang(l){curLang=l;const L=LOCALES[l]||LOCALES.fr;JFR=L.JFR;JLONG=L.JLONG;MFR=L.MFR;MFRC=L.MFRC;document.getElementById('langCur').textContent=l.toUpperCase();document.getElementById('langPop').classList.remove('open');cache={};applyStaticI18n();render()}
+const DIM=[31,28,31,30,31,30,31,31,30,31,30,31];
+function daysInMonth(y,m){return m===1&&y%4===0?29:DIM[m]}
+function isWE(d){return d.getDay()===0||d.getDay()===6}
+function fmtN(n){if(n==null)return '—';n=Math.round(n);return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(n>=1e4?0:1)+'k':n}
+function fmtEur(n){if(n==null)return '—';n=Math.round(n);return n>=1e6?(n/1e6).toFixed(1)+'M€':n>=1e3?(n/1e3).toFixed(1)+'k€':n+'€'}
+function pct(n){return (n*100).toFixed(n<0.1?1:0)+'%'}
+
+const I18N={
+fr:{brand_sub:"Acquisition CRM",nav_global:"Vue globale",nav_dashboard:"Dashboard agence",nav_channels:"Canaux",nav_agency:"Agence",nav_intel:"Intelligence",nav_planning:"Planning",nav_team:"Équipe",nav_settings:"Réglages",soon:"bientôt",all_channels:"Tous les canaux",import_csv:"Importer CSV",new_post:"Nouveau post",search_model:"Rechercher un modèle…",no_model:"Aucun modèle",accounts_word:"comptes",followers_word:"abonnés",tab_data:"Données",tab_acq:"Acquisition & ROI",tab_intel:"Intelligence",all_accounts:"Tous les comptes",kpi_views:"Vues",kpi_likes:"Likes",kpi_comments:"Commentaires",kpi_saves:"Enregistrements",kpi_subs_gained:"Abonnés gagnés",kpi_revenue_of:"Revenu OF",kpi_agency_rev:"Revenu agence",kpi_subs_of:"Abonnés OF gagnés",kpi_total_views:"Vues totales",kpi_posts_pub:"Posts publiés",vs_m1:"vs M-1",kpi_conv:"Taux conversion",kpi_ctr:"Taux de clic",kpi_arpu:"ARPU (€/sub)",kpi_rev_per_k:"Revenu / 1k vues",all_days:"Tous les jours",weekend:"Weekend",date_range:"Plage de dates",clear_filter:"Effacer le filtre",annual_curve:"Courbe annuelle",weeks_suffix:"semaines",days_suffix:"jours",view_month:"Mois",view_week:"Semaine",view_day:"Jour",m_all:"Tout",th_account:"Compte",th_time:"Heure",th_postname:"Nom du post",th_type:"Type",th_score:"Score",th_end:"Fin",th_subs:"Subs",th_revenue:"Revenu",th_source:"Source",th_insight:"Insight",band_top:"Top",band_moyen:"Moyen",band_faible:"Faible",band_bas:"Bas",f_all:"Tous",f_done:"Terminés",f_ongoing:"En cours",src_manual:"Manuel",posts_word:"posts",views_word:"vues",no_posts:"Aucun post pour cette sélection",funnel_title:"Funnel d'acquisition — du reel au revenu",funnel_sub:"reels · reliés par lien tracké",fn_views:"Vues",fn_clicks:"Clics lien bio",fn_subs:"Abonnés OF",fn_rev:"Revenu OF généré",fn_audience:"audience touchée",fn_on_link:"sur le lien en bio",fn_signups:"inscriptions",cap_audience:"audience",cap_conv:"conversion",per_reel:"/ reel",formula_title:"La formule gagnante du mois",formula_badge:"basé sur le €/reel",f_hook:"Hook",f_hour:"Heure",f_lifespan:"Durée de vie",f_channel:"Canal",formula_sentence:"Un reel « <b style='color:#EF9F27'>{hook}</b> » posté vers <b style='color:#EF9F27'>{hour}</b> rapporte en moyenne <b style='color:#EF9F27'>{amt}</b>.",create_with_formula:"Créer un post avec cette formule",top_reels_rev:"Top reels par revenu généré",th_reel:"Reel",no_rev_data:"Aucune donnée revenu — importe ton CSV de liens",rev_per_hook:"Revenu moyen par hook",no_data_yet:"Pas encore de données",reco_title:"Recommandations IA",top_hooks:"Top hooks — vues moyennes",best_time:"Meilleure heure de post",cold:"Froid",hot:"Chaud",perf_lifespan:"Performance par durée de vie",yearly_trends:"Tendances annuelles (revenu)",dur1:"3-5 jours",dur2:"6-9 jours",dur3:"10-14 jours",dur4:"15-20 jours",no_reco:"Pas encore assez de données ce mois-ci pour générer des recommandations.",reco_hook:"Les posts avec hook <b>{h}</b> génèrent <b>{x}× plus de vues</b> que la moyenne ce mois-ci.",reco_slot:"Ton meilleur créneau est <b>{h}h</b> (score moyen {s}%). Concentre tes meilleurs contenus dessus.",reco_dur:"Les reels qui vivent <b>{d}</b> performent le mieux. Laisse-leur le temps de monter avant d'en juger.",reco_under:"Le compte <b>{a}</b> sous-performe de <b>{g}%</b> vs {b}. À revoir.",ac_fast:"⚡ Monte très vite",ac_progress:"📈 Bonne progression",ac_ongoing:"⏳ En cours",ac_jackpot:"🚀 Jackpot — reproduis « {h} »",ac_excellent:"✅ Excellent — « {h} » convertit",ac_correct:"👍 Correct — teste un autre horaire",ac_low:"⚠️ Faible — change de hook",alert_top:"Top modèle du mois : {n}",alert_top_d:"{rev} de revenu · {subs} abonnés gagnés · ARPU {arpu}.",alert_growth:"Plus forte croissance : {n}",alert_growth_d:"{g}% de revenu vs le mois précédent. À pousser.",alert_under:"Compte en sous-performance : {a} ({n})",alert_under_d:"{g}% de vues moyennes vs {b} sur les mêmes hooks. Réviser la stratégie de ce compte.",ranking_title:"Classement des modèles — {month} {year}",sorted_by_rev:"Trié par revenu généré",th_model:"Modèle",th_niche:"Niche",th_evolution:"Évolution",th_trend6:"Tendance 6 m.",modal_new:"Nouveau post",modal_update:"Mettre à jour — {n}",modal_model_chan:"Modèle : {m} · canal : {c}",lbl_postname:"Nom du post",lbl_hook:"Hook / accroche",lbl_account:"Compte",lbl_type:"Type",lbl_date:"Date",lbl_time:"Heure",lbl_link:"Lien tracké (bio)",stats_div:"Stats (J+1 = initiales · à finaliser plus tard)",lbl_v:"Vues",lbl_l:"Likes",lbl_c:"Comm.",lbl_e:"Enreg.",lbl_s:"Partages",lbl_d:"Durée (j.)",acq_div:"Acquisition (via lien tracké / import CSV)",lbl_clicks:"Clics",lbl_subs:"Abonnés OF",lbl_rev:"Revenu €",cancel:"Annuler",save:"Enregistrer",import_title:"Importer un CSV",import_desc:"Importe l'export de ton outil de liens / CRM (Infloww, Beacons, Linktree…). Colonnes attendues : <b>lien_tracké, clics, abonnés, revenu</b>. La jointure au reel se fait par le lien.",import_drop1:"Glisse ton fichier .csv ici",import_drop2:"ou clique pour simuler un import",close:"Fermer",ph_postname:"ex: Teaser robe rouge",ph_hook:"ex: robe rouge, golden hour",toast_planning:"Planning éditorial — bientôt",toast_team:"Gestion équipe & rôles — bientôt",toast_settings:"Paramètres agence — bientôt",toast_updated:"Post mis à jour",toast_added:"Post ajouté",toast_imported:"{n} lignes importées · funnel mis à jour",toast_imported_none:"CSV importé (rien à mettre à jour ici)"},
+en:{brand_sub:"Acquisition CRM",nav_global:"Overview",nav_dashboard:"Agency dashboard",nav_channels:"Channels",nav_agency:"Agency",nav_intel:"Intelligence",nav_planning:"Planning",nav_team:"Team",nav_settings:"Settings",soon:"soon",all_channels:"All channels",import_csv:"Import CSV",new_post:"New post",search_model:"Search a model…",no_model:"No model",accounts_word:"accounts",followers_word:"followers",tab_data:"Data",tab_acq:"Acquisition & ROI",tab_intel:"Intelligence",all_accounts:"All accounts",kpi_views:"Views",kpi_likes:"Likes",kpi_comments:"Comments",kpi_saves:"Saves",kpi_subs_gained:"Subscribers gained",kpi_revenue_of:"OF revenue",kpi_agency_rev:"Agency revenue",kpi_subs_of:"OF subscribers gained",kpi_total_views:"Total views",kpi_posts_pub:"Posts published",vs_m1:"vs M-1",kpi_conv:"Conversion rate",kpi_ctr:"Click rate",kpi_arpu:"ARPU (€/sub)",kpi_rev_per_k:"Revenue / 1k views",all_days:"All days",weekend:"Weekend",date_range:"Date range",clear_filter:"Clear filter",annual_curve:"Annual curve",weeks_suffix:"weeks",days_suffix:"days",view_month:"Month",view_week:"Week",view_day:"Day",m_all:"All",th_account:"Account",th_time:"Time",th_postname:"Post name",th_type:"Type",th_score:"Score",th_end:"End",th_subs:"Subs",th_revenue:"Revenue",th_source:"Source",th_insight:"Insight",band_top:"Top",band_moyen:"Medium",band_faible:"Low",band_bas:"Poor",f_all:"All",f_done:"Finished",f_ongoing:"Ongoing",src_manual:"Manual",posts_word:"posts",views_word:"views",no_posts:"No posts for this selection",funnel_title:"Acquisition funnel — from reel to revenue",funnel_sub:"reels · linked by tracking link",fn_views:"Views",fn_clicks:"Bio link clicks",fn_subs:"OF subscribers",fn_rev:"OF revenue generated",fn_audience:"audience reached",fn_on_link:"on the bio link",fn_signups:"sign-ups",cap_audience:"audience",cap_conv:"conversion",per_reel:"/ reel",formula_title:"The winning formula of the month",formula_badge:"based on €/reel",f_hook:"Hook",f_hour:"Time",f_lifespan:"Lifespan",f_channel:"Channel",formula_sentence:"A « <b style='color:#EF9F27'>{hook}</b> » reel posted around <b style='color:#EF9F27'>{hour}</b> earns on average <b style='color:#EF9F27'>{amt}</b>.",create_with_formula:"Create a post with this formula",top_reels_rev:"Top reels by revenue generated",th_reel:"Reel",no_rev_data:"No revenue data — import your link CSV",rev_per_hook:"Average revenue per hook",no_data_yet:"No data yet",reco_title:"AI recommendations",top_hooks:"Top hooks — avg views",best_time:"Best posting time",cold:"Cold",hot:"Hot",perf_lifespan:"Performance by lifespan",yearly_trends:"Yearly trends (revenue)",dur1:"3-5 days",dur2:"6-9 days",dur3:"10-14 days",dur4:"15-20 days",no_reco:"Not enough data this month to generate recommendations.",reco_hook:"Posts with the <b>{h}</b> hook get <b>{x}× more views</b> than average this month.",reco_slot:"Your best slot is <b>{h}:00</b> (avg score {s}%). Focus your best content there.",reco_dur:"Reels that live <b>{d}</b> perform best. Give them time to climb before judging.",reco_under:"Account <b>{a}</b> underperforms by <b>{g}%</b> vs {b}. Review it.",ac_fast:"⚡ Rising fast",ac_progress:"📈 Good progress",ac_ongoing:"⏳ Ongoing",ac_jackpot:"🚀 Jackpot — repeat « {h} »",ac_excellent:"✅ Excellent — « {h} » converts",ac_correct:"👍 OK — try another time",ac_low:"⚠️ Low — change the hook",alert_top:"Top model of the month: {n}",alert_top_d:"{rev} revenue · {subs} subscribers gained · ARPU {arpu}.",alert_growth:"Fastest growth: {n}",alert_growth_d:"{g}% revenue vs last month. Push it.",alert_under:"Underperforming account: {a} ({n})",alert_under_d:"{g}% avg views vs {b} on the same hooks. Review this account's strategy.",ranking_title:"Model ranking — {month} {year}",sorted_by_rev:"Sorted by revenue generated",th_model:"Model",th_niche:"Niche",th_evolution:"Change",th_trend6:"6-mo trend",modal_new:"New post",modal_update:"Update — {n}",modal_model_chan:"Model: {m} · channel: {c}",lbl_postname:"Post name",lbl_hook:"Hook",lbl_account:"Account",lbl_type:"Type",lbl_date:"Date",lbl_time:"Time",lbl_link:"Tracking link (bio)",stats_div:"Stats (D+1 = initial · finalize later)",lbl_v:"Views",lbl_l:"Likes",lbl_c:"Comm.",lbl_e:"Saves",lbl_s:"Shares",lbl_d:"Duration (d)",acq_div:"Acquisition (via tracking link / CSV import)",lbl_clicks:"Clicks",lbl_subs:"OF subs",lbl_rev:"Revenue €",cancel:"Cancel",save:"Save",import_title:"Import a CSV",import_desc:"Import the export from your link tool / CRM (Infloww, Beacons, Linktree…). Expected columns: <b>tracking_link, clicks, subscribers, revenue</b>. The join to the reel is done by the link.",import_drop1:"Drop your .csv file here",import_drop2:"or click to simulate an import",close:"Close",ph_postname:"e.g. Red dress teaser",ph_hook:"e.g. red dress, golden hour",toast_planning:"Content planning — soon",toast_team:"Team & roles management — soon",toast_settings:"Agency settings — soon",toast_updated:"Post updated",toast_added:"Post added",toast_imported:"{n} rows imported · funnel updated",toast_imported_none:"CSV imported (nothing to update here)"},
+es:{brand_sub:"CRM de adquisición",nav_global:"Vista global",nav_dashboard:"Panel de agencia",nav_channels:"Canales",nav_agency:"Agencia",nav_intel:"Inteligencia",nav_planning:"Planificación",nav_team:"Equipo",nav_settings:"Ajustes",soon:"pronto",all_channels:"Todos los canales",import_csv:"Importar CSV",new_post:"Nueva publicación",search_model:"Buscar un modelo…",no_model:"Ningún modelo",accounts_word:"cuentas",followers_word:"seguidores",tab_data:"Datos",tab_acq:"Adquisición y ROI",tab_intel:"Inteligencia",all_accounts:"Todas las cuentas",kpi_views:"Visualizaciones",kpi_likes:"Me gusta",kpi_comments:"Comentarios",kpi_saves:"Guardados",kpi_subs_gained:"Suscriptores ganados",kpi_revenue_of:"Ingresos OF",kpi_agency_rev:"Ingresos agencia",kpi_subs_of:"Suscriptores OF ganados",kpi_total_views:"Visualizaciones totales",kpi_posts_pub:"Publicaciones",vs_m1:"vs M-1",kpi_conv:"Tasa de conversión",kpi_ctr:"Tasa de clics",kpi_arpu:"ARPU (€/sub)",kpi_rev_per_k:"Ingresos / 1k vis.",all_days:"Todos los días",weekend:"Fin de semana",date_range:"Rango de fechas",clear_filter:"Borrar filtro",annual_curve:"Curva anual",weeks_suffix:"semanas",days_suffix:"días",view_month:"Mes",view_week:"Semana",view_day:"Día",m_all:"Todo",th_account:"Cuenta",th_time:"Hora",th_postname:"Nombre",th_type:"Tipo",th_score:"Puntuación",th_end:"Fin",th_subs:"Subs",th_revenue:"Ingresos",th_source:"Fuente",th_insight:"Insight",band_top:"Top",band_moyen:"Medio",band_faible:"Bajo",band_bas:"Muy bajo",f_all:"Todos",f_done:"Terminados",f_ongoing:"En curso",src_manual:"Manual",posts_word:"publicaciones",views_word:"vis.",no_posts:"Sin publicaciones para esta selección",funnel_title:"Embudo de adquisición — del reel a los ingresos",funnel_sub:"reels · vinculados por enlace",fn_views:"Visualizaciones",fn_clicks:"Clics enlace bio",fn_subs:"Suscriptores OF",fn_rev:"Ingresos OF generados",fn_audience:"audiencia alcanzada",fn_on_link:"en el enlace bio",fn_signups:"inscripciones",cap_audience:"audiencia",cap_conv:"conversión",per_reel:"/ reel",formula_title:"La fórmula ganadora del mes",formula_badge:"basado en €/reel",f_hook:"Gancho",f_hour:"Hora",f_lifespan:"Vida útil",f_channel:"Canal",formula_sentence:"Un reel « <b style='color:#EF9F27'>{hook}</b> » publicado hacia las <b style='color:#EF9F27'>{hour}</b> genera de media <b style='color:#EF9F27'>{amt}</b>.",create_with_formula:"Crear una publicación con esta fórmula",top_reels_rev:"Top reels por ingresos generados",th_reel:"Reel",no_rev_data:"Sin datos de ingresos — importa tu CSV de enlaces",rev_per_hook:"Ingresos medios por gancho",no_data_yet:"Aún sin datos",reco_title:"Recomendaciones IA",top_hooks:"Top ganchos — vis. medias",best_time:"Mejor hora para publicar",cold:"Frío",hot:"Caliente",perf_lifespan:"Rendimiento por vida útil",yearly_trends:"Tendencias anuales (ingresos)",dur1:"3-5 días",dur2:"6-9 días",dur3:"10-14 días",dur4:"15-20 días",no_reco:"Aún no hay suficientes datos este mes para generar recomendaciones.",reco_hook:"Las publicaciones con gancho <b>{h}</b> generan <b>{x}× más visualizaciones</b> que la media este mes.",reco_slot:"Tu mejor franja es las <b>{h}:00</b> (puntuación media {s}%). Concentra tu mejor contenido ahí.",reco_dur:"Los reels que duran <b>{d}</b> rinden mejor. Dales tiempo antes de juzgar.",reco_under:"La cuenta <b>{a}</b> rinde un <b>{g}%</b> menos que {b}. Revísala.",ac_fast:"⚡ Sube rápido",ac_progress:"📈 Buena progresión",ac_ongoing:"⏳ En curso",ac_jackpot:"🚀 Jackpot — repite « {h} »",ac_excellent:"✅ Excelente — « {h} » convierte",ac_correct:"👍 Correcto — prueba otra hora",ac_low:"⚠️ Bajo — cambia de gancho",alert_top:"Top modelo del mes: {n}",alert_top_d:"{rev} de ingresos · {subs} suscriptores ganados · ARPU {arpu}.",alert_growth:"Mayor crecimiento: {n}",alert_growth_d:"{g}% de ingresos vs el mes anterior. A potenciar.",alert_under:"Cuenta con bajo rendimiento: {a} ({n})",alert_under_d:"{g}% de visualizaciones medias vs {b} con los mismos ganchos. Revisa la estrategia de esta cuenta.",ranking_title:"Ranking de modelos — {month} {year}",sorted_by_rev:"Ordenado por ingresos generados",th_model:"Modelo",th_niche:"Nicho",th_evolution:"Evolución",th_trend6:"Tendencia 6 m",modal_new:"Nueva publicación",modal_update:"Actualizar — {n}",modal_model_chan:"Modelo: {m} · canal: {c}",lbl_postname:"Nombre",lbl_hook:"Gancho",lbl_account:"Cuenta",lbl_type:"Tipo",lbl_date:"Fecha",lbl_time:"Hora",lbl_link:"Enlace (bio)",stats_div:"Estadísticas (D+1 = iniciales · finalizar luego)",lbl_v:"Vis.",lbl_l:"Me gusta",lbl_c:"Coment.",lbl_e:"Guard.",lbl_s:"Comp.",lbl_d:"Duración (d)",acq_div:"Adquisición (enlace / CSV)",lbl_clicks:"Clics",lbl_subs:"Suscriptores OF",lbl_rev:"Ingresos €",cancel:"Cancelar",save:"Guardar",import_title:"Importar un CSV",import_desc:"Importa la exportación de tu herramienta de enlaces / CRM (Infloww, Beacons, Linktree…). Columnas esperadas: <b>enlace, clics, suscriptores, ingresos</b>. La unión al reel se hace por el enlace.",import_drop1:"Arrastra tu archivo .csv aquí",import_drop2:"o haz clic para simular una importación",close:"Cerrar",ph_postname:"ej: Teaser vestido rojo",ph_hook:"ej: vestido rojo, golden hour",toast_planning:"Planificación de contenido — pronto",toast_team:"Gestión de equipo y roles — pronto",toast_settings:"Ajustes de agencia — pronto",toast_updated:"Publicación actualizada",toast_added:"Publicación añadida",toast_imported:"{n} filas importadas · embudo actualizado",toast_imported_none:"CSV importado (nada que actualizar aquí)"},
+it:{brand_sub:"CRM acquisizione",nav_global:"Panoramica",nav_dashboard:"Dashboard agenzia",nav_channels:"Canali",nav_agency:"Agenzia",nav_intel:"Intelligence",nav_planning:"Pianificazione",nav_team:"Team",nav_settings:"Impostazioni",soon:"presto",all_channels:"Tutti i canali",import_csv:"Importa CSV",new_post:"Nuovo post",search_model:"Cerca un modello…",no_model:"Nessun modello",accounts_word:"account",followers_word:"follower",tab_data:"Dati",tab_acq:"Acquisizione e ROI",tab_intel:"Intelligence",all_accounts:"Tutti gli account",kpi_views:"Visualizzazioni",kpi_likes:"Like",kpi_comments:"Commenti",kpi_saves:"Salvataggi",kpi_subs_gained:"Abbonati acquisiti",kpi_revenue_of:"Ricavi OF",kpi_agency_rev:"Ricavi agenzia",kpi_subs_of:"Abbonati OF acquisiti",kpi_total_views:"Visualizzazioni totali",kpi_posts_pub:"Post pubblicati",vs_m1:"vs M-1",kpi_conv:"Tasso conversione",kpi_ctr:"Tasso di clic",kpi_arpu:"ARPU (€/sub)",kpi_rev_per_k:"Ricavi / 1k vis.",all_days:"Tutti i giorni",weekend:"Weekend",date_range:"Intervallo date",clear_filter:"Cancella filtro",annual_curve:"Curva annuale",weeks_suffix:"settimane",days_suffix:"giorni",view_month:"Mese",view_week:"Settimana",view_day:"Giorno",m_all:"Tutto",th_account:"Account",th_time:"Ora",th_postname:"Nome post",th_type:"Tipo",th_score:"Punteggio",th_end:"Fine",th_subs:"Subs",th_revenue:"Ricavi",th_source:"Fonte",th_insight:"Insight",band_top:"Top",band_moyen:"Medio",band_faible:"Basso",band_bas:"Scarso",f_all:"Tutti",f_done:"Conclusi",f_ongoing:"In corso",src_manual:"Manuale",posts_word:"post",views_word:"vis.",no_posts:"Nessun post per questa selezione",funnel_title:"Funnel di acquisizione — dal reel ai ricavi",funnel_sub:"reel · collegati da link tracciato",fn_views:"Visualizzazioni",fn_clicks:"Clic link bio",fn_subs:"Abbonati OF",fn_rev:"Ricavi OF generati",fn_audience:"pubblico raggiunto",fn_on_link:"sul link in bio",fn_signups:"iscrizioni",cap_audience:"pubblico",cap_conv:"conversione",per_reel:"/ reel",formula_title:"La formula vincente del mese",formula_badge:"basato su €/reel",f_hook:"Hook",f_hour:"Ora",f_lifespan:"Durata",f_channel:"Canale",formula_sentence:"Un reel « <b style='color:#EF9F27'>{hook}</b> » pubblicato verso le <b style='color:#EF9F27'>{hour}</b> rende in media <b style='color:#EF9F27'>{amt}</b>.",create_with_formula:"Crea un post con questa formula",top_reels_rev:"Top reel per ricavi generati",th_reel:"Reel",no_rev_data:"Nessun dato ricavi — importa il tuo CSV dei link",rev_per_hook:"Ricavi medi per hook",no_data_yet:"Ancora nessun dato",reco_title:"Raccomandazioni IA",top_hooks:"Top hook — vis. medie",best_time:"Orario migliore",cold:"Freddo",hot:"Caldo",perf_lifespan:"Performance per durata",yearly_trends:"Tendenze annuali (ricavi)",dur1:"3-5 giorni",dur2:"6-9 giorni",dur3:"10-14 giorni",dur4:"15-20 giorni",no_reco:"Dati insufficienti questo mese per generare raccomandazioni.",reco_hook:"I post con hook <b>{h}</b> generano <b>{x}× più visualizzazioni</b> della media questo mese.",reco_slot:"Il tuo slot migliore è le <b>{h}:00</b> (punteggio medio {s}%). Concentra lì i contenuti migliori.",reco_dur:"I reel che durano <b>{d}</b> rendono di più. Dai loro tempo prima di giudicare.",reco_under:"L'account <b>{a}</b> rende <b>{g}%</b> in meno di {b}. Da rivedere.",ac_fast:"⚡ Sale veloce",ac_progress:"📈 Buona progressione",ac_ongoing:"⏳ In corso",ac_jackpot:"🚀 Jackpot — ripeti « {h} »",ac_excellent:"✅ Eccellente — « {h} » converte",ac_correct:"👍 Discreto — prova un altro orario",ac_low:"⚠️ Basso — cambia hook",alert_top:"Top modello del mese: {n}",alert_top_d:"{rev} di ricavi · {subs} abbonati acquisiti · ARPU {arpu}.",alert_growth:"Crescita maggiore: {n}",alert_growth_d:"{g}% di ricavi vs il mese scorso. Da spingere.",alert_under:"Account in sottoperformance: {a} ({n})",alert_under_d:"{g}% di vis. medie vs {b} sugli stessi hook. Rivedi la strategia di questo account.",ranking_title:"Classifica modelli — {month} {year}",sorted_by_rev:"Ordinato per ricavi generati",th_model:"Modello",th_niche:"Nicchia",th_evolution:"Variazione",th_trend6:"Trend 6 mesi",modal_new:"Nuovo post",modal_update:"Aggiorna — {n}",modal_model_chan:"Modello: {m} · canale: {c}",lbl_postname:"Nome post",lbl_hook:"Hook",lbl_account:"Account",lbl_type:"Tipo",lbl_date:"Data",lbl_time:"Ora",lbl_link:"Link tracciato (bio)",stats_div:"Statistiche (G+1 = iniziali · da finalizzare)",lbl_v:"Vis.",lbl_l:"Like",lbl_c:"Comm.",lbl_e:"Salv.",lbl_s:"Cond.",lbl_d:"Durata (g)",acq_div:"Acquisizione (link / CSV)",lbl_clicks:"Clic",lbl_subs:"Abbonati OF",lbl_rev:"Ricavi €",cancel:"Annulla",save:"Salva",import_title:"Importa un CSV",import_desc:"Importa l'export del tuo strumento di link / CRM (Infloww, Beacons, Linktree…). Colonne attese: <b>link_tracciato, clic, abbonati, ricavi</b>. Il collegamento al reel avviene tramite il link.",import_drop1:"Trascina qui il tuo file .csv",import_drop2:"o clicca per simulare un'importazione",close:"Chiudi",ph_postname:"es: Teaser vestito rosso",ph_hook:"es: vestito rosso, golden hour",toast_planning:"Pianificazione contenuti — presto",toast_team:"Gestione team e ruoli — presto",toast_settings:"Impostazioni agenzia — presto",toast_updated:"Post aggiornato",toast_added:"Post aggiunto",toast_imported:"{n} righe importate · funnel aggiornato",toast_imported_none:"CSV importato (niente da aggiornare qui)"},
+};
+const HOOKS=['robe rouge','bikini blanc','tenue yoga','lingerie noire','robe dorée','casual jeans','robe fleurie','tenue soirée','crop top beige','maillot une pièce'];
+const NOMS=['Teaser outfit','Morning routine','GRWM','Day in my life','Behind the scenes','New set drop','Vlog journée','Routine soir','Preview exclusive','Ambiance shoot'];
+const NICHES=['Lifestyle / glam','Fitness','Cosplay','Gaming','Glamour','ASMR','Mode','Voyage','Beauté','Dance','Alt / tattoo','Girl next door'];
+const CHANNELS=[
+  {key:'all',name:'Tous les canaux',short:'All',color:'#534AB7',icon:'ti-stack-2'},
+  {key:'instagram',name:'Instagram',short:'IG',color:'#E1306C',icon:'ti-brand-instagram'},
+  {key:'tiktok',name:'TikTok',short:'TT',color:'#010101',icon:'ti-brand-tiktok'},
+  {key:'twitter',name:'Twitter / X',short:'X',color:'#000000',icon:'ti-brand-x'},
+  {key:'reddit',name:'Reddit',short:'Rd',color:'#FF4500',icon:'ti-brand-reddit'},
+  {key:'youtube',name:'YouTube',short:'YT',color:'#FF0000',icon:'ti-brand-youtube'},
+];
+const POSTTYPE={instagram:'Reel',tiktok:'Reel',twitter:'Tweet',reddit:'Post',youtube:'Short'};
+const MODEL_COLORS=['#E1306C','#9B59B6','#27AE60','#E67E22','#3498DB','#E84393','#16A085','#D35400','#8E44AD','#2980B9','#C0392B','#1ABC9C','#F39C12','#6C5CE7','#00B894','#D63031','#0984E3','#E17055','#A29BFE','#FD79A8','#55EFC4','#FAB1A0','#74B9FF','#FFEAA7'];
+const MODEL_NAMES=['Luna','Sara','Mia','Eva','Nina','Lola','Zoé','Maya','Inès','Léa','Chloé','Jade','Anna','Emma','Lina','Alice','Clara','Sofia','Camille','Manon','Juliette','Alba','Vera','Nora'];
+
+/* ============ build models (multi-channel accounts) ============ */
+function slug(name){return name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')}
+function buildModels(){
+  return MODEL_NAMES.map((name,i)=>{
+    const s=slug(name),r=mkRng('model-'+name);
+    const accounts=[];
+    // Instagram (2-3), TikTok, X, Reddit
+    const igN=r.i(2,3);
+    for(let k=0;k<igN;k++)accounts.push({id:s+'_ig'+k,handle:'@'+s+(k===0?'_of':k===1?'_backup':'_fr'),channel:'instagram',followers:r.i(6,55)*1000});
+    accounts.push({id:s+'_tt',handle:'@'+s+'_tok',channel:'tiktok',followers:r.i(10,120)*1000});
+    accounts.push({id:s+'_x',handle:'@'+s+'_x',channel:'twitter',followers:r.i(3,40)*1000});
+    accounts.push({id:s+'_rd',handle:'u/'+s,channel:'reddit',followers:r.i(2,30)*1000});
+    return {id:s,name,color:MODEL_COLORS[i%MODEL_COLORS.length],letter:name[0].toUpperCase(),nicheIdx:i%LOCALES.fr.niches.length,accounts};
+  });
+}
+const MODELS=buildModels();
+function curM(){return MODELS.find(m=>m.id===curModelId)}
+function chanAccounts(model,channel){return channel==='all'?model.accounts:model.accounts.filter(a=>a.channel===channel)}
+function totalFollowers(model){return model.accounts.reduce((s,a)=>s+a.followers,0)}
+
+/* ============ state ============ */
+let curModelId='luna',curChannel='instagram',curAccount='all';
+let curYear=2026,curMonth=5,curPage='data';
+let curFilter='all',curView='mois',curMetric='all';
+let selectedDay=null,dateFrom=null,dateTo=null,editRef=null,chart=null;
+const SC={top:{bar:'#3B6D11',bg:'#EAF3DE',fg:'#27500A',label:'Top'},moyen:{bar:'#BA7517',bg:'#FAEEDA',fg:'#633806',label:'Moyen'},faible:{bar:'#D85A30',bg:'#FBE6DD',fg:'#7A2E12',label:'Faible'},bas:{bar:'#A32D2D',bg:'#F7DCDC',fg:'#6B1A1A',label:'Bas'}};
+function bandOf(s){return s>=70?'top':s>=45?'moyen':s>=20?'faible':'bas'}
+
+/* ============ data generation ============ */
+let cache={};
+function genPosts(modelId,channel,year,month){
+  const key=modelId+'|'+channel+'|'+year+'|'+month;
+  if(cache[key])return cache[key];
+  const model=MODELS.find(m=>m.id===modelId);
+  const accts=chanAccounts(model,channel);
+  const days=daysInMonth(year,month);
+  const arr=[];
+  accts.forEach(acct=>{
+    // per-account "quality multiplier" => backup accounts underperform (realistic)
+    const qr=mkRng('q-'+acct.id);
+    const quality=acct.handle.includes('backup')?0.55:acct.handle.includes('_fr')?0.8:qr.f()*0.5+0.85;
+    for(let d=0;d<days;d++){
+      const nPosts=(channel==='reddit'||channel==='twitter')?2:3;
+      for(let s=0;s<nPosts;s++){
+        const r=mkRng(acct.id+'-'+year+'-'+month+'-'+d+'-'+s);
+        const duree=r.pick([3,4,5,6,7,7,8,10,12,14,15,18]);
+        const termine=(d+duree)<days;
+        const heureH=r.pick([8,9,11,12,18,18,19,20,20]);const heureM=r.pick([0,15,30,45]);
+        const baseV=Math.round(r.i(8000,110000)*quality);
+        const iV=Math.round(baseV*r.i(12,38)/100);
+        const fV=termine?baseV:null;
+        const eViews=fV||iV;
+        const fL=termine?Math.round(baseV*r.i(3,7)/100):null;
+        const fC=termine?Math.round(baseV*r.i(3,9)/1000):null;
+        const fE=termine?Math.round(baseV*r.i(8,25)/1000):null;
+        const fS=termine?Math.round(baseV*r.i(4,14)/1000):null;
+        const hook=r.pick(HOOKS);
+        // funnel (imported via CSV for finished posts)
+        const ctr=(r.f()*0.012+0.004); // 0.4%-1.6%
+        const cr=(r.f()*0.05+0.03);     // 3%-8%
+        const arpu=r.i(14,46);
+        const clicks=termine?Math.round(baseV*ctr):null;
+        const newSubs=termine?Math.max(0,Math.round(clicks*cr)):null;
+        const revenue=termine?Math.round(newSubs*arpu):null;
+        const date=new Date(year,month,d+1);
+        arr.push({
+          id:acct.id+'-'+year+'-'+month+'-'+d+'-'+s,
+          modelId,channel:acct.channel,acctId:acct.id,handle:acct.handle,
+          day:d,slot:s,date,
+          dateLabel:JLONG[date.getDay()]+' '+date.getDate()+' '+MFR[month]+' '+year,
+          heure:String(heureH).padStart(2,'0')+'h'+String(heureM).padStart(2,'0'),
+          heureBucket:heureH,
+          type:POSTTYPE[acct.channel],
+          hook,nom:r.pick(NOMS),notes:'',
+          link:'mjagency.link/'+slug(model.name)+'-'+slug(hook).replace(/ /g,''),
+          duree,termine,finLabel:new Date(year,month,d+1+duree).getDate()+' '+MFRC[month],
+          iV,iL:Math.round(iV*r.i(3,7)/100),iC:Math.round(iV*r.i(3,9)/1000),
+          fV,fL,fC,fE,fS,
+          eViews,clicks,newSubs,revenue,
+          followersGained:termine?Math.max(0,Math.round(newSubs*r.i(8,20)/10)):null,
+          source:termine?'csv':'manuel'
+        });
+      }
+    }
+  });
+  computeScores(arr);
+  cache[key]=arr;
+  return arr;
+}
+// relative score: per-account min-max of composite, ×100
+function computeScores(posts){
+  const byAcct={};
+  posts.forEach(p=>{(byAcct[p.acctId]=byAcct[p.acctId]||[]).push(p)});
+  Object.values(byAcct).forEach(grp=>{
+    const mv=Math.max(...grp.map(p=>p.eViews))||1;
+    const ml=Math.max(...grp.map(p=>p.fL||p.iL))||1;
+    const mc=Math.max(...grp.map(p=>p.fC||p.iC))||1;
+    grp.forEach(p=>{
+      const nv=p.eViews/mv,nl=(p.fL||p.iL)/ml,nc=(p.fC||p.iC)/mc;
+      p.score=Math.round((nv*0.5+nl*0.3+nc*0.2)*100);
+      p.band=bandOf(p.score);
+    });
+  });
+}
+function viewPosts(){let posts=genPosts(curModelId,curChannel,curYear,curMonth);
+  if(curAccount!=='all')posts=posts.filter(p=>p.acctId===curAccount);return posts}
+
+function autoComment(p){
+  if(!p.termine){if(p.iV>40000)return t('ac_fast');if(p.iV>18000)return t('ac_progress');return t('ac_ongoing')}
+  if(p.band==='top'&&p.revenue>2000)return t('ac_jackpot',{h:p.hook});
+  if(p.band==='top')return t('ac_excellent',{h:p.hook});
+  if(p.band==='moyen')return t('ac_correct');
+  return t('ac_low');
+}
+
+/* ============ model selector ============ */
+function toggleMS(){const p=document.getElementById('msPop');p.classList.toggle('open');if(p.classList.contains('open')){document.getElementById('msSearch').value='';renderMSList();document.getElementById('msSearch').focus()}}
+document.addEventListener('click',e=>{if(!document.getElementById('msWrap').contains(e.target))document.getElementById('msPop').classList.remove('open');if(!document.getElementById('langWrap').contains(e.target))document.getElementById('langPop').classList.remove('open')});
+function renderMSList(){
+  const q=(document.getElementById('msSearch').value||'').toLowerCase().trim();
+  const list=MODELS.filter(m=>!q||m.name.toLowerCase().includes(q)||nicheLabel(m.nicheIdx).toLowerCase().includes(q));
+  const el=document.getElementById('msList');
+  if(!list.length){el.innerHTML='<div class="ms-empty">'+t('no_model')+'</div>';return}
+  el.innerHTML=list.map(m=>`<div class="ms-row${m.id===curModelId?' on':''}" onclick="selectModel('${m.id}')">
+    <div class="mav" style="background:${m.color};width:26px;height:26px;font-size:11px">${m.letter}</div>
+    <div style="flex:1;min-width:0"><div class="nm">${m.name}</div><div class="meta">${nicheLabel(m.nicheIdx)} · ${m.accounts.length} ${t('accounts_word')} · ${fmtN(totalFollowers(m))} ${t('followers_word')}</div></div>
+    ${m.id===curModelId?'<i class="ti ti-check" style="color:#EF9F27;font-size:14px"></i>':''}
+  </div>`).join('');
+}
+function selectModel(id){curModelId=id;curAccount='all';selectedDay=null;dateFrom=null;dateTo=null;document.getElementById('msPop').classList.remove('open');render()}
+
+/* ============ channel rail ============ */
+function renderChanRail(){
+  document.getElementById('chanRail').innerHTML=CHANNELS.map(c=>{
+    const model=curM();const n=chanAccounts(model,c.key).length;
+    return `<div class="ni${curPage!=='dashboard'&&curChannel===c.key?' on':''}" onclick="selectChannel('${c.key}')">
+      <div class="pico" style="background:${c.key==='all'?'transparent':'#fff'};${c.key==='all'?'':'border:0.5px solid rgba(255,255,255,.15)'}"><i class="ti ${c.icon}" style="font-size:13px;color:${c.key==='all'?'rgba(255,255,255,.6)':c.color==='#000000'||c.color==='#010101'?'#fff':c.color}"></i></div>
+      ${c.key==='all'?t('all_channels'):c.name}<span class="cnt">${n}</span></div>`;
+  }).join('');
+}
+function selectChannel(k){curChannel=k;curAccount='all';selectedDay=null;dateFrom=null;dateTo=null;if(curPage==='dashboard')curPage='data';render()}
+
+/* ============ navigation ============ */
+function goDashboard(){curPage='dashboard';render()}
+function goPage(p){if(curPage==='dashboard')curPage=p;else curPage=p;render()}
+function setTab(p){curPage=p;render()}
+
+/* ============ MASTER render ============ */
+function render(){
+  renderChanRail();
+  document.querySelectorAll('.ni').forEach(n=>{});
+  document.getElementById('nav-dashboard').classList.toggle('on',curPage==='dashboard');
+  const model=curM();const chan=CHANNELS.find(c=>c.key===curChannel);
+  // topbar
+  document.getElementById('msAv').style.background=model.color;
+  document.getElementById('msAv').textContent=model.letter;
+  document.getElementById('msName').textContent=model.name;
+  if(curPage==='dashboard'){
+    document.getElementById('ptitle').innerHTML='<i class="ti ti-layout-dashboard" style="color:#EF9F27"></i> '+t('nav_dashboard');
+    document.getElementById('topSub').textContent=MFR[curMonth]+' '+curYear+' · '+MODELS.length+' '+t('th_model').toLowerCase()+'s · '+t('all_channels').toLowerCase();
+  }else{
+    document.getElementById('ptitle').innerHTML=`<i class="ti ${chan.icon}" style="color:${chan.color==='#000000'||chan.color==='#010101'?'#1a1a1a':chan.color}"></i> <span>${chan.key==='all'?t('all_channels'):chan.name} — ${model.name}</span>`;
+  }
+  // route
+  if(curPage==='dashboard')renderDashboard();
+  else renderModelPage();
+}
+
+/* ============ Dashboard agence ============ */
+function renderDashboard(){
+  const rows=MODELS.map(m=>{
+    const posts=genPosts(m.id,'all',curYear,curMonth).filter(p=>p.termine);
+    const rev=posts.reduce((s,p)=>s+(p.revenue||0),0);
+    const subs=posts.reduce((s,p)=>s+(p.newSubs||0),0);
+    const views=posts.reduce((s,p)=>s+(p.eViews||0),0);
+    // monthly trend for spark
+    const spark=Array.from({length:6},(_,k)=>{const mm=(curMonth-5+k+12)%12;return genPosts(m.id,'all',curYear,mm).filter(p=>p.termine).reduce((s,p)=>s+(p.revenue||0),0)});
+    const prev=genPosts(m.id,'all',curYear,(curMonth+11)%12).filter(p=>p.termine).reduce((s,p)=>s+(p.revenue||0),0);
+    const growth=prev>0?(rev-prev)/prev:0;
+    return {m,rev,subs,views,spark,growth,arpu:subs>0?rev/subs:0};
+  }).sort((a,b)=>b.rev-a.rev);
+  const tot={rev:rows.reduce((s,r)=>s+r.rev,0),subs:rows.reduce((s,r)=>s+r.subs,0),views:rows.reduce((s,r)=>s+r.views,0)};
+  const totReels=MODELS.reduce((s,m)=>s+genPosts(m.id,'all',curYear,curMonth).length,0);
+  const best=rows[0],fastest=[...rows].sort((a,b)=>b.growth-a.growth)[0];
+  // underperforming account alert
+  let under=null;
+  for(const m of MODELS){const accs=m.accounts.filter(a=>a.channel==='instagram');if(accs.length>=2){
+    const perf=accs.map(a=>{const ps=genPosts(m.id,'instagram',curYear,curMonth).filter(p=>p.termine&&p.acctId===a.id);return{a,v:ps.reduce((s,p)=>s+p.eViews,0)/(ps.length||1)}});
+    perf.sort((x,y)=>y.v-x.v);if(perf[0].v>0){const gap=(perf[perf.length-1].v-perf[0].v)/perf[0].v;if(gap<-0.25){under={model:m,best:perf[0].a,worst:perf[perf.length-1].a,gap};break}}}}
+
+  let h=`<div class="kpi-row" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+    ${kpiCard('ti-coin','#FBE9C7','#B8860B',fmtEur(tot.rev),t('kpi_agency_rev'),null)}
+    ${kpiCard('ti-magnet','#EAF3DE','#3B6D11',fmtN(tot.subs),t('kpi_subs_of'),null)}
+    ${kpiCard('ti-eye','#FFF0F6','#C2185B',fmtN(tot.views),t('kpi_total_views'),null)}
+    ${kpiCard('ti-movie','#EEF1FB','#3949AB',totReels,t('kpi_posts_pub'),null)}
+  </div>`;
+
+  h+=`<div class="grid2"><div class="alert" style="border-color:#EAF3DE;background:#F6FBEF"><i class="ti ti-trophy" style="color:#3B6D11"></i><div><div class="at">${t('alert_top',{n:best.m.name})}</div><div class="ad">${t('alert_top_d',{rev:fmtEur(best.rev),subs:fmtN(best.subs),arpu:fmtEur(best.arpu)})}</div></div></div>
+    <div class="alert" style="border-color:#FBE9C7;background:#FFFBF2"><i class="ti ti-rocket" style="color:#BA7517"></i><div><div class="at">${t('alert_growth',{n:fastest.m.name})}</div><div class="ad">${t('alert_growth_d',{g:(fastest.growth>=0?'+':'')+(fastest.growth*100).toFixed(0)})}</div></div></div></div>`;
+  if(under)h+=`<div class="alert" style="border-color:#F7DCDC;background:#FDF4F4;margin-bottom:12px"><i class="ti ti-alert-triangle" style="color:#A32D2D"></i><div><div class="at">${t('alert_under',{a:under.worst.handle,n:under.model.name})}</div><div class="ad">${t('alert_under_d',{g:(under.gap*100).toFixed(0),b:under.best.handle})}</div></div></div>`;
+
+  h+=`<div class="post-card"><div class="post-hd"><div class="post-lbl"><i class="ti ti-trophy" style="color:#EF9F27"></i> ${t('ranking_title',{month:MFR[curMonth],year:curYear})}</div><div class="muted" style="font-size:10px">${t('sorted_by_rev')}</div></div>
+    <div style="overflow-x:auto"><table><thead><tr><th style="width:26px">#</th><th>${t('th_model')}</th><th>${t('th_niche')}</th><th>${t('th_revenue')}</th><th>${t('fn_subs')}</th><th>${t('kpi_views')}</th><th>ARPU</th><th>${t('th_evolution')}</th><th style="width:80px">${t('th_trend6')}</th></tr></thead><tbody>`;
+  rows.forEach((r,i)=>{
+    const mx=Math.max(...r.spark,1);
+    h+=`<tr style="cursor:pointer" onclick="selectModel('${r.m.id}')">
+      <td class="p muted">${i+1}</td>
+      <td class="p"><div class="lead-name"><div class="mav" style="background:${r.m.color};width:22px;height:22px;font-size:10px">${r.m.letter}</div><b style="font-weight:500">${r.m.name}</b></div></td>
+      <td class="p muted" style="font-size:10px">${nicheLabel(r.m.nicheIdx)}</td>
+      <td class="p" style="font-weight:500">${fmtEur(r.rev)}</td>
+      <td class="p">${fmtN(r.subs)}</td>
+      <td class="p muted">${fmtN(r.views)}</td>
+      <td class="p">${fmtEur(r.arpu)}</td>
+      <td class="p"><span class="${r.growth>=0?'up':'down'}" style="font-size:10px">${r.growth>=0?'▲':'▼'} ${Math.abs(r.growth*100).toFixed(0)}%</span></td>
+      <td class="p"><div class="spark">${r.spark.map(v=>`<span style="height:${Math.max(2,Math.round(v/mx*22))}px;background:${r.m.color}"></span>`).join('')}</div></td>
+    </tr>`;
+  });
+  h+=`</tbody></table></div></div>`;
+  document.getElementById('content').innerHTML=h;
+}
+function kpiCard(icon,bg,color,v,l,delta){
+  return `<div class="kpi"><div class="kpi-ico" style="background:${bg}"><i class="ti ${icon}" style="font-size:14px;color:${color}"></i></div><div class="kpi-v">${v}</div><div class="kpi-l">${l}</div>${delta!=null?`<div class="kpi-d ${delta>=0?'up':'down'}">${delta>=0?'▲':'▼'} ${Math.abs(delta).toFixed(0)}% ${t('vs_m1')}</div>`:''}</div>`;
+}
+
+/* ============ Model page (tabs) ============ */
+function renderModelPage(){
+  const tabs=[['data','ti-table',t('tab_data')],['acq','ti-target-arrow',t('tab_acq')],['intel','ti-brain',t('tab_intel')]];
+  let h=`<div class="page-tabs">${tabs.map(t=>`<div class="ptab${curPage===t[0]?' on':''}" onclick="setTab('${t[0]}')"><i class="ti ${t[1]}"></i> ${t[2]}</div>`).join('')}</div>`;
+  h+=acctTabsHTML()+periodNavHTML()+`<div id="pageBody"></div>`;
+  document.getElementById('content').innerHTML=h;
+  if(curPage==='data')renderData();
+  else if(curPage==='acq')renderAcq();
+  else renderIntel();
+}
+function acctTabsHTML(){
+  const model=curM();const accts=chanAccounts(model,curChannel);
+  let html=`<div class="acct-tabs"><div class="atab${curAccount==='all'?' on':''}" onclick="selectAcct('all')">${t('all_accounts')}</div>`;
+  accts.forEach(a=>{const c=CHANNELS.find(x=>x.key===a.channel);
+    html+=`<div class="atab${curAccount===a.id?' on':''}" onclick="selectAcct('${a.id}')"><span class="atab-dot" style="background:${c.color}"></span>${a.handle}</div>`});
+  return html+`</div>`;
+}
+function selectAcct(id){curAccount=id;selectedDay=null;dateFrom=null;dateTo=null;render()}
+function periodNavHTML(){
+  return `<div class="period-nav"><div style="display:flex;align-items:center;gap:6px">
+    <button class="ybtn" onclick="changeYear(-1)"><i class="ti ti-chevron-left" style="font-size:12px"></i></button>
+    <span class="year-label">${curYear}</span>
+    <button class="ybtn" onclick="changeYear(1)"><i class="ti ti-chevron-right" style="font-size:12px"></i></button></div>
+    <div class="month-tabs">${MFRC.map((m,i)=>`<div class="mtab${i===curMonth?' on':''}" onclick="switchMonth(${i})">${m}</div>`).join('')}</div></div>`;
+}
+function changeYear(d){curYear+=d;selectedDay=null;dateFrom=null;dateTo=null;render()}
+function switchMonth(m){curMonth=m;selectedDay=null;dateFrom=null;dateTo=null;render()}
+
+/* ============ Page Données ============ */
+function renderData(){
+  const fin=viewPosts().filter(p=>p.termine);
+  const sum=f=>fin.reduce((s,p)=>s+(p[f]||0),0);
+  // prev month for deltas
+  const prevFin=(()=>{const pm=(curMonth+11)%12,py=curMonth===0?curYear-1:curYear;return genPosts(curModelId,curChannel,py,pm).filter(p=>p.termine&&(curAccount==='all'||p.acctId===curAccount))})();
+  const psum=f=>prevFin.reduce((s,p)=>s+(p[f]||0),0);
+  const delta=(a,b)=>b>0?((a-b)/b*100):null;
+  const model=curM();const acctLabel=curAccount==='all'?model.name+' · '+t('all_accounts'):viewPosts()[0]?.handle||curAccount;
+  document.getElementById('topSub').textContent=MFR[curMonth]+' '+curYear+' · '+acctLabel;
+  const followersGained=sum('followersGained');
+  const kpis=[
+    ['ti-eye','#FFF0F6','#C2185B',fmtN(sum('eViews')),t('kpi_views'),delta(sum('eViews'),psum('eViews'))],
+    ['ti-heart','#FFF0F0','#D4537E',fmtN(sum('fL')),t('kpi_likes'),delta(sum('fL'),psum('fL'))],
+    ['ti-message-circle','#F0F8FF','#378ADD',fmtN(sum('fC')),t('kpi_comments'),null],
+    ['ti-bookmark','#F0FFF6','#1D9E75',fmtN(sum('fE')),t('kpi_saves'),null],
+    ['ti-magnet','#EAF3DE','#3B6D11',fmtN(followersGained),t('kpi_subs_gained'),delta(followersGained,psum('followersGained'))],
+    ['ti-coin','#FBE9C7','#B8860B',fmtEur(sum('revenue')),t('kpi_revenue_of'),delta(sum('revenue'),psum('revenue'))],
+  ];
+  let h=`<div class="kpi-row">${kpis.map(k=>kpiCard(k[0],k[1],k[2],k[3],k[4],k[5])).join('')}</div>`;
+  h+=`<div class="mid-grid">
+    <div><div class="cal-card"><div class="cal-hd"><span>${MFR[curMonth]} ${curYear}</span><span class="cal-sel" id="calSel">${selectedDay?JLONG[new Date(curYear,curMonth,selectedDay).getDay()]+' '+selectedDay:t('all_days')}</span></div>
+      <div class="cal-dow-grid">${JFR.map(j=>`<div class="cal-dow">${j}</div>`).join('')}</div>
+      <div class="cal-grid" id="calGrid"></div></div>
+      <div class="dp-card"><div class="dp-label">${t('date_range')}</div><div class="dp-row">
+        <input type="date" class="dp-input" id="dpFrom" onchange="applyDateRange()">
+        <span class="dp-sep">→</span><input type="date" class="dp-input" id="dpTo" onchange="applyDateRange()"></div>
+        <button class="btn" style="width:100%;justify-content:center" onclick="clearDateFilter()"><i class="ti ti-x" style="font-size:11px"></i> ${t('clear_filter')}</button></div>
+    </div>
+    <div class="card card-pad"><div class="card-hd"><div class="card-title" id="chartTitle"><i class="ti ti-chart-line"></i> ${t('annual_curve')}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+        <div class="view-btns"><span class="vb${curView==='mois'?' on':''}" onclick="setView('mois')">${t('view_month')}</span><span class="vb${curView==='semaine'?' on':''}" onclick="setView('semaine')">${t('view_week')}</span><span class="vb${curView==='jour'?' on':''}" onclick="setView('jour')">${t('view_day')}</span></div>
+        <div class="pills" id="metricPills"></div></div></div>
+      <div style="position:relative;width:100%;height:250px"><canvas id="gc"></canvas></div></div>
+  </div>`;
+  h+=`<div class="post-card"><div class="post-hd"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <div class="post-lbl" id="tableLbl"></div>
+    <div class="leg">${Object.keys(SC).map(k=>`<span class="ld" style="background:${SC[k].bar}"></span><span class="ll">${t('band_'+k)}</span>`).join('')}</div></div>
+    <div class="filters">${[['all',t('f_all')],['top',t('band_top')],['moyen',t('band_moyen')],['termine',t('f_done')],['encours',t('f_ongoing')]].map(f=>`<span class="fc${curFilter===f[0]?' on':''}" onclick="filt('${f[0]}')">${f[1]}</span>`).join('')}</div></div>
+    <div style="overflow-x:auto;max-height:360px;overflow-y:auto"><table><thead><tr>
+      <th style="width:4px;padding:0"></th><th style="width:78px">${t('th_account')}</th><th style="width:46px">${t('th_time')}</th><th style="width:18%">${t('th_postname')}</th>
+      <th style="width:40px">${t('th_type')}</th><th style="width:64px">${t('th_score')}</th><th style="width:60px">${t('th_end')}</th><th style="width:52px">${t('kpi_views')}</th><th style="width:42px">${t('kpi_likes')}</th>
+      <th style="width:46px">${t('th_subs')}</th><th style="width:54px">${t('th_revenue')}</th><th style="width:62px">${t('th_source')}</th><th>${t('th_insight')}</th><th style="width:26px"></th>
+    </tr></thead><tbody id="tbody"></tbody></table></div></div>`;
+  document.getElementById('pageBody').innerHTML=h;
+  // sync date inputs
+  const y=curYear,m=String(curMonth+1).padStart(2,'0'),dd=daysInMonth(curYear,curMonth);
+  document.getElementById('dpFrom').value=dateFrom?fmtDateISO(dateFrom):`${y}-${m}-01`;
+  document.getElementById('dpTo').value=dateTo?fmtDateISO(dateTo):`${y}-${m}-${String(dd).padStart(2,'0')}`;
+  renderMetricPills();buildCalendar();buildChart();renderTable();
+}
+function fmtDateISO(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+const MC_CHART=['#E1306C','#D4537E','#378ADD'],ML=['Vues','Likes','Commentaires'],PC={'all':'#534AB7','0':'#E1306C','1':'#D4537E','2':'#378ADD'};
+function renderMetricPills(){
+  document.getElementById('metricPills').innerHTML=[['all',t('m_all')],['0',t('kpi_views')],['1',t('kpi_likes')],['2',t('lbl_c')]].map(p=>{
+    const on=curMetric===p[0];return `<div class="pill${on?' on':''}" style="${on?`background:${PC[p[0]]};border-color:${PC[p[0]]};color:#fff`:''}" onclick="sp('${p[0]}')">${p[1]}</div>`}).join('');
+}
+function sp(k){curMetric=k;renderMetricPills();buildChart()}
+function setView(v){curView=v;render()}
+function filt(f){curFilter=f;renderTable()}
+
+function buildCalendar(){
+  const days=daysInMonth(curYear,curMonth),first=new Date(curYear,curMonth,1).getDay();
+  const posts=viewPosts();
+  let html='';
+  for(let i=0;i<first;i++)html+='<div class="cal-day empty"></div>';
+  for(let d=1;d<=days;d++){
+    const date=new Date(curYear,curMonth,d),we=isWE(date),sel=selectedDay===d;
+    const dayPosts=posts.filter(p=>p.day===d-1);
+    const dots=dayPosts.slice(0,4).map(p=>`<div class="cal-dot" style="background:${SC[p.band].bar}"></div>`).join('');
+    html+=`<div class="cal-day${we?' we':''}${sel?' selected':''}" onclick="selectCalDay(${d})"><div class="cal-dn">${d}</div><div class="cal-dots">${dots}</div></div>`;
+  }
+  document.getElementById('calGrid').innerHTML=html;
+}
+function selectCalDay(d){selectedDay=(selectedDay===d)?null:d;dateFrom=null;dateTo=null;
+  if(selectedDay){const ds=fmtDateISO(new Date(curYear,curMonth,selectedDay));document.getElementById('dpFrom').value=ds;document.getElementById('dpTo').value=ds}
+  document.getElementById('calSel').textContent=selectedDay?JLONG[new Date(curYear,curMonth,selectedDay).getDay()]+' '+selectedDay:t('all_days');
+  buildCalendar();renderTable()}
+function applyDateRange(){const f=document.getElementById('dpFrom').value,t=document.getElementById('dpTo').value;
+  if(f&&t){dateFrom=new Date(f+'T00:00:00');dateTo=new Date(t+'T23:59:59');selectedDay=null;buildCalendar()}renderTable()}
+function clearDateFilter(){selectedDay=null;dateFrom=null;dateTo=null;const y=curYear,m=String(curMonth+1).padStart(2,'0'),dd=daysInMonth(curYear,curMonth);
+  document.getElementById('dpFrom').value=`${y}-${m}-01`;document.getElementById('dpTo').value=`${y}-${m}-${String(dd).padStart(2,'0')}`;buildCalendar();renderTable()}
+
+function buildChart(){
+  if(chart){chart.destroy();chart=null}
+  const fields=['eViews','fL','fC'];let labels=[],datasets=[];
+  const mkSets=(matrix)=>curMetric==='all'
+    ?MC_CHART.map((col,i)=>({label:ML[i],data:matrix.map(r=>r[i]),borderColor:col,backgroundColor:'transparent',borderWidth:1.6,pointRadius:2,pointBackgroundColor:col,fill:false,tension:.4}))
+    :[{label:ML[+curMetric],data:matrix.map(r=>r[+curMetric]),borderColor:MC_CHART[+curMetric],backgroundColor:MC_CHART[+curMetric]+'20',borderWidth:2,pointRadius:2.5,pointBackgroundColor:MC_CHART[+curMetric],fill:true,tension:.4}];
+  const ct=document.getElementById('chartTitle');
+  if(curView==='mois'){labels=MFRC;ct.innerHTML='<i class="ti ti-chart-line"></i> '+t('annual_curve')+' '+curYear;
+    const byM=Array.from({length:12},(_,mm)=>{const mp=genPosts(curModelId,curChannel,curYear,mm).filter(p=>p.termine&&(curAccount==='all'||p.acctId===curAccount));return fields.map(f=>mp.reduce((s,p)=>s+(p[f]||0),0))});datasets=mkSets(byM);}
+  else if(curView==='semaine'){const days=daysInMonth(curYear,curMonth),weeks=[];for(let d=0;d<days;d+=7)weeks.push({from:d,to:Math.min(d+7,days),label:'S.'+(Math.floor(d/7)+1)});labels=weeks.map(w=>w.label);ct.innerHTML='<i class="ti ti-chart-line"></i> '+MFR[curMonth]+' — '+t('weeks_suffix');
+    const posts=viewPosts().filter(p=>p.termine);const byW=weeks.map(w=>{const wp=posts.filter(p=>p.day>=w.from&&p.day<w.to);return fields.map(f=>wp.reduce((s,p)=>s+(p[f]||0),0))});datasets=mkSets(byW);}
+  else{const days=daysInMonth(curYear,curMonth);labels=Array.from({length:days},(_,i)=>String(i+1));ct.innerHTML='<i class="ti ti-chart-line"></i> '+MFR[curMonth]+' — '+t('days_suffix');
+    const posts=viewPosts().filter(p=>p.termine);const byD=Array.from({length:days},(_,d)=>{const dp=posts.filter(p=>p.day===d);return fields.map(f=>dp.reduce((s,p)=>s+(p[f]||0),0))});datasets=mkSets(byD);}
+  chart=new Chart(document.getElementById('gc'),{type:'line',data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,callbacks:{label:c=>' '+c.dataset.label+': '+c.parsed.y.toLocaleString('fr-FR')}}},
+    scales:{x:{grid:{color:'rgba(128,128,128,.06)'},ticks:{color:'#888',font:{size:9},maxTicksLimit:12}},y:{grid:{color:'rgba(128,128,128,.06)'},ticks:{color:'#888',font:{size:9},callback:v=>fmtN(v)}}}}});
+}
+
+function scoreBadge(p){const c=SC[p.band];return `<span class="score-badge" style="background:${c.bg};color:${c.fg}"><span class="dot" style="background:${c.bar}"></span>${t('band_'+p.band)} ${p.score}%</span>`}
+function srcBadge(s){const map={manuel:['src-manuel','ti-keyboard',t('src_manual')],metricool:['src-metricool','ti-plug','Metricool'],csv:['src-csv','ti-file-spreadsheet','CSV']};const x=map[s]||map.manuel;return `<span class="src ${x[0]}"><i class="ti ${x[1]}"></i>${x[2]}</span>`}
+
+function renderTable(){
+  const model=curM();let posts=viewPosts();
+  if(selectedDay)posts=posts.filter(p=>p.day===selectedDay-1);
+  else if(dateFrom&&dateTo)posts=posts.filter(p=>p.date>=dateFrom&&p.date<=dateTo);
+  if(curFilter==='top')posts=posts.filter(p=>p.band==='top');
+  else if(curFilter==='moyen')posts=posts.filter(p=>p.band==='moyen');
+  else if(curFilter==='termine')posts=posts.filter(p=>p.termine);
+  else if(curFilter==='encours')posts=posts.filter(p=>!p.termine);
+  posts=[...posts].sort((a,b)=>a.day-b.day||a.heureBucket-b.heureBucket);
+  const allView=viewPosts();
+  const acctLabel=curAccount==='all'?model.name+' — '+curChannel:allView[0]?.handle||curAccount;
+  document.getElementById('tableLbl').textContent=MFR[curMonth]+' '+curYear+' · '+acctLabel+' — '+allView.length+' '+t('posts_word');
+  let html='',lastDate='';
+  posts.forEach(p=>{
+    const c=SC[p.band],isFinal=p.termine,we=isWE(p.date);
+    const acctColor=(CHANNELS.find(x=>x.key===p.channel)||{}).color||model.color;
+    if(p.dateLabel!==lastDate){lastDate=p.dateLabel;
+      const dayPosts=allView.filter(x=>x.day===p.day);const dayV=dayPosts.reduce((s,x)=>s+(x.eViews||0),0);const dayR=dayPosts.reduce((s,x)=>s+(x.revenue||0),0);
+      html+=`<tr class="sep-row"><td colspan="14"><div style="display:flex;justify-content:space-between;align-items:center">
+        ${p.dateLabel}${we?' <span style="font-size:9px;color:#BA7517;background:#FAEEDA;padding:1px 5px;border-radius:4px;margin-left:5px">'+t('weekend')+'</span>':''}
+        <span style="font-size:10px;font-weight:400;color:#6b7280">${fmtN(dayV)} ${t('views_word')} · ${fmtEur(dayR)} · ${dayPosts.length} ${t('posts_word')}</span></div></td></tr>`}
+    html+=`<tr style="${we?'background:#fffdf8':''}">
+      <td style="padding:0;width:4px"><div style="width:4px;min-height:36px;background:${c.bar}"></div></td>
+      <td class="p"><span style="font-size:9px;font-weight:600;color:${acctColor}">${p.handle}</span></td>
+      <td class="p muted" style="font-size:10px">${p.heure}</td>
+      <td class="p" style="font-weight:500;max-width:0;overflow:hidden;text-overflow:ellipsis" title="${p.nom} · hook: ${p.hook}">${p.nom}<div style="font-size:9px;color:#9ca3af;font-weight:400">${p.hook}</div></td>
+      <td class="p"><span class="tag" style="background:#FFF0F6;color:#993556">${p.type}</span></td>
+      <td class="p">${scoreBadge(p)}</td>
+      <td class="p muted" style="font-size:10px">${p.termine?p.finLabel:'—'}</td>
+      <td class="p" style="${isFinal?'font-weight:500':'color:#BA7517'}">${isFinal?fmtN(p.fV):'~'+fmtN(p.iV)}</td>
+      <td class="p" style="${isFinal?'':'color:#BA7517'}">${isFinal?fmtN(p.fL):'~'+fmtN(p.iL)}</td>
+      <td class="p">${p.termine?'<b style="font-weight:500;color:#27500A">'+fmtN(p.newSubs)+'</b>':'<span class="muted">—</span>'}</td>
+      <td class="p">${p.termine?'<b style="font-weight:500">'+fmtEur(p.revenue)+'</b>':'<span class="muted">—</span>'}</td>
+      <td class="p">${srcBadge(p.source)}</td>
+      <td class="p" style="white-space:normal;font-size:10px;color:#6b7280;line-height:1.4">${autoComment(p)}</td>
+      <td class="p" style="padding:4px"><button class="eb" onclick="openEdit('${p.id}')" title="Mettre à jour"><i class="ti ti-edit"></i></button></td></tr>`;
+  });
+  document.getElementById('tbody').innerHTML=html||`<tr><td colspan="14"><div class="empty-state"><i class="ti ti-mood-empty"></i>${t('no_posts')}</div></td></tr>`;
+}
+
+/* ============ Page Acquisition & ROI (hero) ============ */
+function renderAcq(){
+  const fin=viewPosts().filter(p=>p.termine);
+  const model=curM();
+  document.getElementById('topSub').textContent=MFR[curMonth]+' '+curYear+' · '+t('tab_acq')+' · '+(curAccount==='all'?model.name:viewPosts()[0]?.handle||'');
+  const reels=fin.length;
+  const views=fin.reduce((s,p)=>s+p.eViews,0);
+  const clicks=fin.reduce((s,p)=>s+(p.clicks||0),0);
+  const subs=fin.reduce((s,p)=>s+(p.newSubs||0),0);
+  const rev=fin.reduce((s,p)=>s+(p.revenue||0),0);
+  const arpu=subs>0?rev/subs:0,ctr=views>0?clicks/views:0,cr=clicks>0?subs/clicks:0,revPerReel=reels>0?rev/reels:0,revPerK=views>0?rev/(views/1000):0;
+  let h=`<div class="kpi-row" style="grid-template-columns:repeat(6,minmax(0,1fr))">
+    ${kpiCard('ti-coin','#FBE9C7','#B8860B',fmtEur(rev),t('kpi_revenue_of'),null)}
+    ${kpiCard('ti-magnet','#EAF3DE','#3B6D11',fmtN(subs),t('kpi_subs_gained'),null)}
+    ${kpiCard('ti-target-arrow','#EEF1FB','#3949AB',pct(cr),t('kpi_conv'),null)}
+    ${kpiCard('ti-click','#FFF4E6','#BA7517',pct(ctr),t('kpi_ctr'),null)}
+    ${kpiCard('ti-diamond','#F0FFF6','#1D9E75',fmtEur(arpu),t('kpi_arpu'),null)}
+    ${kpiCard('ti-chart-bar','#FFF0F6','#C2185B',fmtEur(revPerK),t('kpi_rev_per_k'),null)}
+  </div>`;
+  // funnel card (audience -> revenu ; conversions calculées entre étapes comparables)
+  const fdata=[
+    {n:t('fn_views'),v:views,sub:t('fn_audience'),col:'#E1306C',cap:t('cap_audience')},
+    {n:t('fn_clicks'),v:clicks,sub:t('fn_on_link'),col:'#E67E22',cap:'CTR'},
+    {n:t('fn_subs'),v:subs,sub:t('fn_signups'),col:'#27AE60',cap:t('cap_conv')},
+  ];
+  h+=`<div class="card card-pad" style="margin-bottom:12px"><div class="card-hd"><div class="card-title"><i class="ti ti-filter"></i> ${t('funnel_title')}</div><span class="muted" style="font-size:10px">${reels} ${t('funnel_sub')}</span></div><div class="funnel">`;
+  fdata.forEach((s,i)=>{
+    const ratio=views>0?s.v/views:0;
+    const w=i===0?100:Math.max(8,Math.round(Math.cbrt(ratio)*100));
+    const conv=i===0?'100%':pct(s.v/(fdata[i-1].v||1));
+    h+=`<div class="fn-step"><div class="fn-meta"><div class="fn-name">${s.n}</div><div class="fn-sub">${s.sub}</div></div>
+      <div class="fn-track"><div class="fn-fill" style="width:${w}%;background:${s.col}">${fmtN(s.v)}</div></div>
+      <div class="fn-rate"><b>${conv}</b><span>${s.cap}</span></div></div>`;
+  });
+  h+=`<div class="fn-step"><div class="fn-meta"><div class="fn-name">${t('fn_rev')}</div><div class="fn-sub">ARPU ${fmtEur(arpu)}</div></div>
+    <div class="fn-track" style="background:#FBF3E0"><div class="fn-fill" style="width:100%;background:#BA7517">${fmtEur(rev)}</div></div>
+    <div class="fn-rate"><b>${fmtEur(revPerReel)}</b><span>${t('per_reel')}</span></div></div>`;
+  h+=`</div></div>`;
+  // winning formula
+  h+=winningFormula(fin)+`<div class="grid2">`;
+  // top reels by revenue
+  const top=[...fin].sort((a,b)=>(b.revenue||0)-(a.revenue||0)).slice(0,6);
+  h+=`<div class="card"><div class="card-pad" style="padding-bottom:6px"><div class="card-title"><i class="ti ti-flame"></i> ${t('top_reels_rev')}</div></div>
+    <div style="overflow-x:auto"><table><thead><tr><th>${t('th_reel')}</th><th>${t('f_hook')}</th><th>${t('kpi_views')}</th><th>${t('th_subs')}</th><th>${t('th_revenue')}</th></tr></thead><tbody>`;
+  if(top.length)top.forEach(p=>{h+=`<tr><td class="p" style="font-weight:500">${p.nom}<div style="font-size:9px;color:#9ca3af">${p.handle} · ${p.heure}</div></td>
+    <td class="p muted" style="font-size:10px">${p.hook}</td><td class="p muted">${fmtN(p.eViews)}</td><td class="p" style="color:#27500A;font-weight:500">${fmtN(p.newSubs)}</td><td class="p" style="font-weight:500">${fmtEur(p.revenue)}</td></tr>`});
+  else h+=`<tr><td colspan="5"><div class="empty-state"><i class="ti ti-database-off"></i>${t('no_rev_data')}</div></td></tr>`;
+  h+=`</tbody></table></div></div>`;
+  // ROI by hook
+  const hookMap={};fin.forEach(p=>{(hookMap[p.hook]=hookMap[p.hook]||{rev:0,subs:0,n:0});hookMap[p.hook].rev+=p.revenue||0;hookMap[p.hook].subs+=p.newSubs||0;hookMap[p.hook].n++});
+  const hookArr=Object.entries(hookMap).map(([h2,d])=>({hook:h2,rev:d.n?d.rev/d.n:0})).sort((a,b)=>b.rev-a.rev).slice(0,8);
+  const maxHook=Math.max(...hookArr.map(h2=>h2.rev),1);
+  h+=`<div class="card card-pad"><div class="card-title" style="margin-bottom:11px"><i class="ti ti-coin"></i> ${t('rev_per_hook')}</div>`;
+  if(hookArr.length)hookArr.forEach((x,i)=>{const col=i===0?'#3B6D11':i<=2?'#BA7517':'#D85A30';
+    h+=`<div class="roi-row"><div class="roi-name">${x.hook}</div><div class="roi-bar-wrap"><div class="roi-bar" style="width:${Math.round(x.rev/maxHook*100)}%;background:${col}"></div></div><div class="roi-val">${fmtEur(x.rev)}</div></div>`});
+  else h+=`<div class="empty-state"><i class="ti ti-database-off"></i>${t('no_data_yet')}</div>`;
+  h+=`</div></div>`;
+  document.getElementById('pageBody').innerHTML=h;
+}
+function winningFormula(fin){
+  if(!fin.length)return `<div class="formula" style="margin-bottom:12px"><div class="formula-hd"><i class="ti ti-sparkles" style="color:#EF9F27;font-size:16px"></i><span style="font-size:13px;font-weight:500;color:#fff">${t('formula_title')}</span></div><div style="color:rgba(255,255,255,.6);font-size:12px">${t('no_rev_data')}</div></div>`;
+  const best=(keyFn,labelFn)=>{const m={};fin.forEach(p=>{const k=keyFn(p);(m[k]=m[k]||{rev:0,n:0});m[k].rev+=p.revenue||0;m[k].n++});
+    return Object.entries(m).map(([k,d])=>({k,avg:d.n?d.rev/d.n:0,label:labelFn(k)})).sort((a,b)=>b.avg-a.avg)[0]};
+  const dlab=d=>d<=5?t('dur1'):d<=9?t('dur2'):d<=14?t('dur3'):t('dur4');
+  const bh=best(p=>p.hook,k=>k);
+  const bt=best(p=>p.heureBucket,k=>k+'h');
+  const bd=best(p=>dlab(p.duree),k=>k);
+  const bc=best(p=>p.channel,k=>(CHANNELS.find(c=>c.key===k)||{name:k}).name);
+  return `<div class="formula" style="margin-bottom:12px"><div class="formula-hd"><i class="ti ti-sparkles" style="color:#EF9F27;font-size:16px"></i><span style="font-size:13px;font-weight:500;color:#fff">${t('formula_title')}</span><span class="formula-badge" style="margin-left:auto">${t('formula_badge')}</span></div>
+    <div class="formula-grid">
+      <div class="formula-item"><div class="formula-k">${t('f_hook')}</div><div class="formula-v">${bh.label}</div></div>
+      <div class="formula-item"><div class="formula-k">${t('f_hour')}</div><div class="formula-v">${bt.label}</div></div>
+      <div class="formula-item"><div class="formula-k">${t('f_lifespan')}</div><div class="formula-v">${bd.label}</div></div>
+      <div class="formula-item"><div class="formula-k">${t('f_channel')}</div><div class="formula-v">${bc.label}</div></div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+      <div style="color:rgba(255,255,255,.78);font-size:12px">${t('formula_sentence',{hook:bh.label,hour:bt.label,amt:fmtEur(bh.avg)})}</div>
+      <button class="btn btn-accent" onclick="openNew('${bh.label}')"><i class="ti ti-plus"></i> ${t('create_with_formula')}</button>
+    </div></div>`;
+}
+
+/* ============ Page Intelligence ============ */
+function renderIntel(){
+  const model=curM();
+  document.getElementById('topSub').textContent=MFR[curMonth]+' '+curYear+' · '+t('tab_intel')+' · '+model.name;
+  const posts=genPosts(curModelId,curChannel,curYear,curMonth).filter(p=>p.termine);
+  // reco computed
+  const reco=computeReco(posts,model);
+  let h=`<div class="reco-card"><div class="reco-header"><i class="ti ti-brain" style="color:#EF9F27;font-size:16px"></i><span style="font-size:13px;font-weight:500;color:#fff">${t('reco_title')}</span><span class="reco-badge">${model.name}</span><span style="font-size:11px;color:rgba(255,255,255,.4);margin-left:auto">${MFR[curMonth]} ${curYear}</span></div>${reco.map(r=>`<div class="reco-item"><div class="reco-icon"><i class="ti ${r.icon}"></i></div><div class="reco-text">${r.text}</div></div>`).join('')}</div>`;
+  h+=`<div class="intel-grid">
+    <div class="card card-pad"><div class="card-title" style="margin-bottom:11px"><i class="ti ti-fish-hook"></i> ${t('top_hooks')}</div><div id="hooksList"></div></div>
+    <div class="card card-pad"><div class="card-title" style="margin-bottom:11px"><i class="ti ti-clock-hour-4"></i> ${t('best_time')}</div><div class="heatmap" id="heatmap"></div>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:9px"><div style="font-size:10px;color:#6b7280">${t('cold')}</div><div style="flex:1;height:4px;border-radius:2px;background:linear-gradient(90deg,#EAF3DE,#3B6D11)"></div><div style="font-size:10px;color:#6b7280">${t('hot')}</div></div></div>
+    <div class="card card-pad"><div class="card-title" style="margin-bottom:11px"><i class="ti ti-calendar-stats"></i> ${t('perf_lifespan')}</div><div id="durList"></div></div>
+    <div class="card card-pad"><div class="card-title" style="margin-bottom:11px"><i class="ti ti-trending-up"></i> ${t('yearly_trends')}</div><div id="trendList"></div></div>
+  </div>`;
+  document.getElementById('pageBody').innerHTML=h;
+  // hooks
+  const hookMap={};HOOKS.forEach(h2=>hookMap[h2]={v:0,n:0});posts.forEach(p=>{if(hookMap[p.hook]){hookMap[p.hook].v+=p.eViews;hookMap[p.hook].n++}});
+  const hookArr=Object.entries(hookMap).map(([h2,d])=>({hook:h2,avg:d.n?Math.round(d.v/d.n):0})).sort((a,b)=>b.avg-a.avg);
+  const maxH=hookArr[0]?.avg||1;
+  document.getElementById('hooksList').innerHTML=hookArr.map((x,i)=>{const col=i<3?'#3B6D11':i<6?'#BA7517':i<8?'#D85A30':'#A32D2D';
+    return `<div class="hook-row"><div class="hook-name">${x.hook}</div><div class="hook-bar-wrap"><div class="hook-bar" style="width:${Math.round(x.avg/maxH*100)}%;background:${col}"></div></div><div class="hook-val">${fmtN(x.avg)}</div>${i===0?'<i class="ti ti-trophy" style="color:#EF9F27;font-size:13px"></i>':i<=2?'<i class="ti ti-flame" style="color:#D85A30;font-size:12px"></i>':'<span style="width:13px"></span>'}</div>`}).join('');
+  // heatmap from real posts: avg score by (dayOfWeek, hourBucket)
+  const slots=[8,9,11,12,18,19,20];
+  const grid={};posts.forEach(p=>{const dw=p.date.getDay();const key=p.heureBucket+'-'+dw;(grid[key]=grid[key]||[]).push(p.score)});
+  let mx=1;Object.values(grid).forEach(a=>{const avg=a.reduce((s,v)=>s+v,0)/a.length;if(avg>mx)mx=avg});
+  let hm='<div></div>'+JFR.map(j=>`<div class="hm-head">${j}</div>`).join('');
+  slots.forEach(sl=>{hm+=`<div class="hm-label">${sl}h</div>`;JFR.forEach((_,dw)=>{const a=grid[sl+'-'+dw];const avg=a?a.reduce((s,v)=>s+v,0)/a.length:0;const intensity=avg/mx;
+    hm+=`<div class="hm-cell" style="background:rgba(59,109,17,${a?(0.12+intensity*0.85).toFixed(2):'0.05'})" title="${JFR[dw]} ${sl}h — score moyen ${Math.round(avg)}${a?' ('+a.length+' posts)':' (aucun)'}"></div>`})});
+  document.getElementById('heatmap').innerHTML=hm;
+  // duration buckets
+  const durB=[{label:t('dur1'),min:3,max:5},{label:t('dur2'),min:6,max:9},{label:t('dur3'),min:10,max:14},{label:t('dur4'),min:15,max:20}];
+  const durData=durB.map(b=>{const bp=posts.filter(p=>p.duree>=b.min&&p.duree<=b.max);return{label:b.label,avg:bp.length?Math.round(bp.reduce((s,p)=>s+p.eViews,0)/bp.length):0}});
+  const maxD=Math.max(...durData.map(d=>d.avg),1);const bestDur=Math.max(...durData.map(d=>d.avg));
+  document.getElementById('durList').innerHTML=durData.map(d=>{const col=d.avg===bestDur?'#3B6D11':d.avg>=maxD*0.6?'#BA7517':'#D85A30';
+    return `<div class="dur-row"><div class="dur-label">${d.label}</div><div class="dur-bar-wrap"><div class="dur-bar" style="width:${Math.round(d.avg/maxD*100)}%;background:${col}"></div></div><div class="dur-val">${fmtN(d.avg)}</div></div>`}).join('');
+  // yearly trend (revenue)
+  const monthData=Array.from({length:12},(_,mm)=>{const mp=genPosts(curModelId,curChannel,curYear,mm).filter(p=>p.termine);return{label:MFRC[mm],v:mp.reduce((s,p)=>s+(p.revenue||0),0)}});
+  const maxT=Math.max(...monthData.map(d=>d.v),1);
+  document.getElementById('trendList').innerHTML=monthData.map(d=>{const r=d.v/maxT,col=r>=.75?'#3B6D11':r>=.45?'#BA7517':'#D85A30';
+    return `<div class="trend-row"><div class="trend-month">${d.label}</div><div class="trend-bar-wrap"><div class="trend-bar" style="width:${Math.round(r*100)}%;background:${col}"></div></div><div class="trend-val">${fmtEur(d.v)}</div></div>`}).join('');
+}
+function computeReco(posts,model){
+  if(!posts.length)return [{icon:'ti-info-circle',text:t('no_reco')}];
+  const out=[];
+  const hookMap={};posts.forEach(p=>{(hookMap[p.hook]=hookMap[p.hook]||{v:0,n:0});hookMap[p.hook].v+=p.eViews;hookMap[p.hook].n++});
+  const avgAll=posts.reduce((s,p)=>s+p.eViews,0)/posts.length;
+  const hookArr=Object.entries(hookMap).map(([h,d])=>({h,avg:d.v/d.n})).sort((a,b)=>b.avg-a.avg);
+  if(hookArr[0]&&avgAll>0)out.push({icon:'ti-rocket',text:t('reco_hook',{h:hookArr[0].h,x:(hookArr[0].avg/avgAll).toFixed(1)})});
+  const slotMap={};posts.forEach(p=>{(slotMap[p.heureBucket]=slotMap[p.heureBucket]||[]).push(p.score)});
+  const slotArr=Object.entries(slotMap).map(([h,a])=>({h:+h,avg:a.reduce((s,v)=>s+v,0)/a.length})).sort((a,b)=>b.avg-a.avg);
+  if(slotArr[0])out.push({icon:'ti-clock',text:t('reco_slot',{h:slotArr[0].h,s:Math.round(slotArr[0].avg)})});
+  const durB=[{label:t('dur1'),min:3,max:5},{label:t('dur2'),min:6,max:9},{label:t('dur3'),min:10,max:14},{label:t('dur4'),min:15,max:20}];
+  const durArr=durB.map(b=>{const bp=posts.filter(p=>p.duree>=b.min&&p.duree<=b.max);return{label:b.label,avg:bp.length?bp.reduce((s,p)=>s+p.eViews,0)/bp.length:0}}).sort((a,b)=>b.avg-a.avg);
+  if(durArr[0])out.push({icon:'ti-calendar',text:t('reco_dur',{d:durArr[0].label})});
+  const igAccts=model.accounts.filter(a=>a.channel===curChannel||curChannel==='all');
+  if(igAccts.length>=2){const perf=igAccts.map(a=>{const ps=posts.filter(p=>p.acctId===a.id);return{a,avg:ps.length?ps.reduce((s,p)=>s+p.eViews,0)/ps.length:0}}).filter(x=>x.avg>0).sort((x,y)=>y.avg-x.avg);
+    if(perf.length>=2){const gap=(perf[perf.length-1].avg-perf[0].avg)/perf[0].avg;if(gap<-0.2)out.push({icon:'ti-alert-triangle',text:t('reco_under',{a:perf[perf.length-1].a.handle,g:Math.round(gap*100),b:perf[0].a.handle})})}}
+  return out.slice(0,4);
+}
+
+/* ============ Modals ============ */
+function fillAcctSelect(){const accts=chanAccounts(curM(),curChannel==='all'?'instagram':curChannel);
+  document.getElementById('f-acct').innerHTML=accts.map(a=>`<option value="${a.id}">${a.handle}</option>`).join('')}
+function openNew(prefHook){
+  editRef=null;document.getElementById('mTitle').textContent=t('modal_new');
+  document.getElementById('mSub').textContent=t('modal_model_chan',{m:curM().name,c:curChannel==='all'?t('all_channels'):(CHANNELS.find(c=>c.key===curChannel)||{}).name});
+  fillAcctSelect();
+  ['f-nom','f-v','f-l','f-c','f-e','f-s','f-d','f-clk','f-sub','f-rev'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-hook').value=prefHook||'';
+  document.getElementById('f-type').value='Reel';
+  document.getElementById('f-date').value=fmtDateISO(new Date(curYear,curMonth,Math.min(new Date().getDate?15:15,28)));
+  document.getElementById('f-heure').value='18:30';
+  document.getElementById('f-link').value=prefHook?('mjagency.link/'+slug(curM().name)+'-'+slug(prefHook).replace(/ /g,'')):'';
+  document.getElementById('mo').classList.add('open');
+}
+function openEdit(id){
+  const posts=genPosts(curModelId,curChannel,curYear,curMonth);const p=posts.find(x=>x.id===id);if(!p)return;
+  editRef=id;document.getElementById('mTitle').textContent=t('modal_update',{n:p.nom});
+  document.getElementById('mSub').textContent=p.dateLabel+' · '+p.heure+' · '+p.handle+' · '+t('f_hook')+' : '+p.hook;
+  fillAcctSelect();document.getElementById('f-acct').value=p.acctId;
+  document.getElementById('f-nom').value=p.nom;document.getElementById('f-hook').value=p.hook;document.getElementById('f-type').value=p.type;
+  document.getElementById('f-date').value=fmtDateISO(p.date);document.getElementById('f-heure').value=String(p.heureBucket).padStart(2,'0')+':00';
+  document.getElementById('f-link').value=p.link;
+  document.getElementById('f-v').value=p.fV||p.iV||'';document.getElementById('f-l').value=p.fL||p.iL||'';document.getElementById('f-c').value=p.fC||p.iC||'';
+  document.getElementById('f-e').value=p.fE||'';document.getElementById('f-s').value=p.fS||'';document.getElementById('f-d').value=p.duree||'';
+  document.getElementById('f-clk').value=p.clicks||'';document.getElementById('f-sub').value=p.newSubs||'';document.getElementById('f-rev').value=p.revenue||'';
+  document.getElementById('mo').classList.add('open');
+}
+function saveModal(){
+  const g=id=>document.getElementById(id).value;const gi=id=>{const v=parseInt(document.getElementById(id).value);return isNaN(v)?null:v};
+  const posts=genPosts(curModelId,curChannel,curYear,curMonth);
+  if(editRef){const p=posts.find(x=>x.id===editRef);if(p){
+    p.nom=g('f-nom')||p.nom;p.hook=g('f-hook')||p.hook;p.type=g('f-type');p.link=g('f-link')||p.link;
+    const v=gi('f-v');if(v!=null){p.fV=v;p.eViews=v;p.termine=true}
+    const l=gi('f-l');if(l!=null)p.fL=l;const c=gi('f-c');if(c!=null)p.fC=c;const e=gi('f-e');if(e!=null)p.fE=e;const s=gi('f-s');if(s!=null)p.fS=s;
+    const d=gi('f-d');if(d!=null){p.duree=d;p.termine=true;p.finLabel=new Date(curYear,curMonth,p.day+1+d).getDate()+' '+MFRC[curMonth]}
+    const clk=gi('f-clk');if(clk!=null)p.clicks=clk;const sub=gi('f-sub');if(sub!=null)p.newSubs=sub;const rev=gi('f-rev');if(rev!=null){p.revenue=rev;p.source='csv'}
+  }computeScores(posts);toast(t('toast_updated'))}
+  else{
+    const acctId=g('f-acct');const acct=curM().accounts.find(a=>a.id===acctId);const dateV=g('f-date');const date=dateV?new Date(dateV+'T00:00:00'):new Date(curYear,curMonth,1);
+    const hh=parseInt((g('f-heure')||'18:30').split(':')[0])||18;
+    const v=gi('f-v'),clk=gi('f-clk'),sub=gi('f-sub'),rev=gi('f-rev');const dur=gi('f-d');
+    const np={id:'manual-'+Date.now(),modelId:curModelId,channel:acct.channel,acctId,handle:acct.handle,day:date.getDate()-1,slot:9,date,
+      dateLabel:JLONG[date.getDay()]+' '+date.getDate()+' '+MFR[date.getMonth()]+' '+date.getFullYear(),
+      heure:String(hh).padStart(2,'0')+'h00',heureBucket:hh,type:g('f-type')||'Reel',hook:g('f-hook')||'—',nom:g('f-nom')||'Nouveau post',notes:'',
+      link:g('f-link')||'mjagency.link/new',duree:dur||7,termine:rev!=null||v!=null,finLabel:'—',
+      iV:v||0,iL:gi('f-l')||0,iC:gi('f-c')||0,fV:v,fL:gi('f-l'),fC:gi('f-c'),fE:gi('f-e'),fS:gi('f-s'),
+      eViews:v||0,clicks:clk,newSubs:sub,revenue:rev,followersGained:sub?Math.round(sub*1.4):null,source:rev!=null?'csv':'manuel'};
+    posts.push(np);computeScores(posts);toast(t('toast_added'))}
+  closeModal();render();
+}
+function closeModal(){document.getElementById('mo').classList.remove('open');editRef=null}
+function openImport(){document.getElementById('moImp').classList.add('open')}
+function closeImport(){document.getElementById('moImp').classList.remove('open')}
+function simImport(){
+  // mark in-progress posts of current view as imported with simulated funnel data
+  const posts=genPosts(curModelId,curChannel,curYear,curMonth);let n=0;
+  posts.forEach(p=>{if(p.source!=='csv'&&p.termine===false){const r=mkRng('imp-'+p.id);p.clicks=Math.round(p.eViews*(r.f()*0.012+0.004));p.newSubs=Math.max(0,Math.round(p.clicks*(r.f()*0.05+0.03)));p.revenue=Math.round(p.newSubs*r.i(14,46));p.source='csv';n++}});
+  closeImport();toast(n?t('toast_imported',{n:n}):t('toast_imported_none'));render();
+}
+
+/* ============ toast ============ */
+let toastTimer=null;
+function toast(msg){const t=document.getElementById('toast');document.getElementById('toastTxt').textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2600)}
+
+/* ============ init ============ */
+applyStaticI18n();
+render();
+</script>
+</body>
+</html>
